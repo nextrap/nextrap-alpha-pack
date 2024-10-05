@@ -50,18 +50,21 @@ export class NxaLeadButton extends LitElement {
 
 
     render() {
-        if (this.icon) {
-            this.append(ka_create_element('i', {class: this.icon, slot: 'icon'}));
+        if ( ! this.hasChildNodes()) {
+            if (this.icon) {
+                this.append(ka_create_element('i', {class: this.icon, slot: 'icon'}));
+            }
+            if (this.title) {
+                this.append(ka_create_element('div', {class: 'title'}, this.title));
+            }
+            if (this.spacer) {
+                this.append(ka_create_element('div', {class: 'spacer'}));
+            }
+            if (this.subtitle) {
+                this.append(ka_create_element('div', {class: 'subtitle'}, this.subtitle));
+            }
         }
-        if (this.title) {
-            this.append(ka_create_element('div', {class: 'title'}, this.title));
-        }
-        if (this.spacer) {
-            this.append(ka_create_element('div', {class: 'spacer'}));
-        }
-        if (this.subtitle) {
-            this.append(ka_create_element('div', {class: 'subtitle'}, this.subtitle));
-        }
+
 
         this.#applyClasses();
 
