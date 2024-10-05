@@ -179,10 +179,10 @@ export const style = css`
         0% {
             left: -100%;
         }
-        40% {
+        25% {
             left: -100%;
         }
-        50% {
+        35% {
             left: 100%;
         }
         60% {
