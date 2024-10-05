@@ -13,7 +13,7 @@
   },
   "files": [
     "/dist",
-    "/src",
+    "/src/**/*.js",
     "/templates",
     "/themes",
     "/docs",
@@ -21,6 +21,7 @@
     "/elements",
     "/sections",
     "/_tpl",
+    "*.js",
     "*.scss",
     "*.json"
   ],
