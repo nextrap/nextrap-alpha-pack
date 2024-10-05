@@ -30,6 +30,7 @@ class NxInfiniscroll extends HTMLElement {
         //slot.style.webkitUserDrag = "none"; // Prevent dragging in WebKit browsers
         shadow.appendChild(slot);
 
+
         this.container = slot;
         this.autoScroll = this.hasAttribute("auto-scroll");
         this.snap = this.hasAttribute("snap");

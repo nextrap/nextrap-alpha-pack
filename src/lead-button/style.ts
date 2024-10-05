@@ -12,14 +12,15 @@ export const style = css`
         --text-color: #000;
         --border-radius: 0.5em;
         --text-space: 1em;
-        --title-font-size: 1.2em;
-        --subtitle-font-size: 0.8em;
-        --icon-font-size: 2em;
-        --icon-padding: 1em;
+        --title-font-size: 1.4em;
+        --subtitle-font-size: 1em;
+        --icon-font-size: 2.5em;
+        --icon-padding: .8em;
         --border: 1px solid #000;
         --display: inline-block;
-        --box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
-        --white-space: nowrap;
+        --box-shadow: 0 0 5px rgba(0, 0, 0, 0.6);
+        --white-space: wrap;
+        --wave-color: #a34444;
 
         display: var(--display);
 
@@ -75,7 +76,7 @@ export const style = css`
                 background: linear-gradient(
                     to right,
                     transparent 0%,
-                    #a34444 50%,
+                    var(--wave-color) 50%,
                     transparent 100%
                 );
                 animation: wave 15s infinite;
@@ -90,21 +91,24 @@ export const style = css`
         display: inline-block;
         padding: 0;
         margin: 0;
-        width: auto;
+
         font-size: unset;
+        width: 100%;
     }
     button {
         padding: 0;
         margin: 0;
         font: inherit;
-        width: auto;
+        width: 100%;
         font-size: unset;
         border: none;
         background: none;
         cursor: pointer;
+
     }
 
     .lead-button {
+        width: 100%;
         padding: 0;
         margin: 0;
         border: var(--border);
@@ -142,7 +146,7 @@ export const style = css`
             aspect-ratio: 1;
 
             &::slotted(i) {
-                color: var(--icon-text-color);
+                color: var(--icon-color);
                 font-size: var(--icon-font-size);
 
 

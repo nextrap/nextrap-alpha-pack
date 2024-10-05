@@ -5,6 +5,7 @@ import {customElement, property} from "lit/decorators.js";
 import {style} from './style';
 import {ka_create_element} from "@kasimirjs/core/src/create-element";
 import {ka_dom_ready} from "@kasimirjs/core/src/await/dom-ready";
+import {ka_sleep} from "@kasimirjs/core";
 
 
 @customElement('nxa-lead-button')
@@ -21,6 +22,7 @@ export class NxaLeadButton extends LitElement {
     @property({type: Boolean}) spacer = false;
     @property() subtitle = '';
     @property() icon = '';
+    @property() type = '';
 
     #renderContent() {
         return html`
@@ -31,7 +33,7 @@ export class NxaLeadButton extends LitElement {
     }
 
     #renderButton() {
-       return html`<button class="lead-button">${this.#renderContent()}</button>`;
+       return html`<button type="${this.type}" class="lead-button">${this.#renderContent()}</button>`;
     }
 
     #renderLink() {
@@ -50,7 +52,8 @@ export class NxaLeadButton extends LitElement {
 
 
     render() {
-        if ( ! this.hasChildNodes()) {
+
+        if (!this.firstElementChild) {
             if (this.icon) {
                 this.append(ka_create_element('i', {class: this.icon, slot: 'icon'}));
             }
@@ -64,6 +67,11 @@ export class NxaLeadButton extends LitElement {
                 this.append(ka_create_element('div', {class: 'subtitle'}, this.subtitle));
             }
         }
+
+        (async () => {
+            await ka_sleep(100);
+
+        })();
 
 
         this.#applyClasses();
