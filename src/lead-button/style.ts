@@ -5,25 +5,27 @@ import {css} from "lit";
 export const style = css`
 
     :host{
+        --classes: 'icon-start shadow';
         --icon-background: #f5f5f5;
         --icon-text-color: #000;
         --background-color: #f5f5f5;
         --text-color: #000;
         --border-radius: 0.5em;
-        --text-margin: 0 1em;
+        --text-space: 1em;
         --title-font-size: 1.2em;
         --subtitle-font-size: 0.8em;
-        --icon-font-size: 3em;
-        --icon-padding: 0.5em;
+        --icon-font-size: 2em;
+        --icon-padding: 1em;
         --border: 1px solid #000;
+        --display: inline-block;
+        --box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+        --white-space: nowrap;
 
-        &.inverted {
-
-        }
+        display: var(--display);
 
     }
 
-    :host(.inverted) {
+    :host(.inverted-icon) {
         .lead-button {
             .icon-section {
                 background-color: var(--text-color);
@@ -32,13 +34,31 @@ export const style = css`
                     color: var(--icon-background);
                 }
             }
+            .text-section {
+                padding: 0 var(--text-space)  ; // Left and right
+            }
+        }
+    }
+
+
+    :host(.icon-top) {
+        .lead-button {
+            flex-direction: column;
+
+            .icon-section {
+                aspect-ratio: unset;
+            }
+            .text-section {
+                margin: 0 var(--text-space) var(--text-space) var(--text-space);
+
+            }
         }
     }
 
 
     :host(.shadow) {
         .lead-button {
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
         }
     }
 
@@ -91,15 +111,18 @@ export const style = css`
         border-radius: var(--border-radius);
         display: flex;
         align-items: center;
+        box-shadow: var(--box-shadow);
         background-color: var(--background-color);
         color: var(--text-color);
         cursor: pointer;
         position: relative;
         overflow: hidden;
-        transition: filter 0.3s ease;
+        transition: filter 0.1s ease, transform 0.1s ease;
+
 
         &:hover {
             filter: brightness(0.93);
+            transform: scale(1.02);
         }
         &:active {
             filter: brightness(0.8);
@@ -129,11 +152,11 @@ export const style = css`
 
         .text-section {
             text-align: left;
-            margin: var(--text-margin);
+            margin: 0 var(--text-space) 0 0; // default only right
             display: flex;
             flex-direction: column;
             align-items: flex-start;
-            white-space: nowrap; /* Prevents breaking the content */
+            white-space: var(--white-space); /* Prevents breaking the content */
 
             ::slotted(.title) {
                 font-size: var(--title-font-size);
@@ -168,7 +191,7 @@ export const style = css`
 
     /* Optional Separator */
 
-    .separator {
+    .spacer {
         width: 100%;
         border: none;
         border-top: 1px solid lighten($primary-text-color, 20%);
