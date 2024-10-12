@@ -50,7 +50,14 @@ class NxInfiniscroll extends HTMLElement {
         }, { threshold: 1.0 });
     }
 
+    #timer: number | null = null;
+
     connectedCallback() {
+        this.#timer = window.setInterval(() => {
+            this.animateScroll();
+        }, 60);
+
+
         // Initialize container with child elements via slot
         Array.from(this.children).forEach((child) => {
             const clonedChild = child.cloneNode(true) as HTMLElement;
@@ -71,6 +78,7 @@ class NxInfiniscroll extends HTMLElement {
     }
 
     disconnectedCallback() {
+        window.clearTimeout(this.#timer);
         this.stopAutoScroll();
     }
 
@@ -90,7 +98,7 @@ class NxInfiniscroll extends HTMLElement {
 
     private addDragEvents() {
         let isDragging = false;
-        this.container.addEventListener("mousedown", (e) => {
+        this.container.addEventListener("pointerdown", (e) => {
             isDragging = true;
             this.startX = e.pageX - this.container.offsetLeft;
             this.scrollLeftStart = this.container.scrollLeft;
@@ -98,7 +106,7 @@ class NxInfiniscroll extends HTMLElement {
             this.stopAutoScroll(); // Stop auto-scroll while dragging
         });
 
-        this.container.addEventListener("mouseup", () => {
+        this.container.addEventListener("pointerup", () => {
             isDragging = false;
             this.container.style.cursor = "grab";
             if (this.snap) {
@@ -115,7 +123,7 @@ class NxInfiniscroll extends HTMLElement {
             }
         });
 
-        this.container.addEventListener("mousemove", (e) => {
+        this.container.addEventListener("pointermove", (e) => {
             if (!isDragging) return;
             e.preventDefault();
             const x = e.pageX - this.container.offsetLeft;
@@ -146,23 +154,19 @@ class NxInfiniscroll extends HTMLElement {
 
     #autoScroll = false;
 
+    private animateScroll() {
+        if (this.#autoScroll === false) return;
+
+        this.container.scrollLeft += this.scrollSpeed;
+        if (this.container.scrollLeft + this.container.clientWidth >= this.container.scrollWidth) {
+            this.container.scrollLeft = 0; // Reset scroll position to create an infinite loop
+        }
+    }
+
     private startAutoScroll() {
         if (this.#autoScroll === true)
             return;
         this.#autoScroll = true;
-        let index = 0;
-        const animate = async() => {
-            await ka_sleep(30);
-            this.container.scrollLeft += this.scrollSpeed;
-            if (this.container.scrollLeft + this.container.clientWidth >= this.container.scrollWidth) {
-                this.container.scrollLeft = 0; // Reset scroll position to create an infinite loop
-            }
-
-
-            if (this.#autoScroll)
-                requestAnimationFrame(animate);
-        };
-        requestAnimationFrame(animate)
     }
 
     private stopAutoScroll() {
