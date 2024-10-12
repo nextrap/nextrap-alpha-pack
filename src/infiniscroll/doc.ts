@@ -14,9 +14,9 @@ registerComponent({
 
 
 <nxa-infiniscroll auto-scroll>
-    <img src="https://cdn.leuffen.de//leu-kdnlogos/v2/20/267-128_267/MVZ-GG.svg" alt="MVZ GG">
-    <img src="https://cdn.leuffen.de//leu-kdnlogos/v2/19/85-64_170/Praxis-Gromes.svg" alt="Praxis Gromes">
-    <img src="https://cdn.leuffen.de//leu-kdnlogos/v2/18/57-32_228/Gefaess-Gallis.svg" alt="Gefaess Gallis">
+    <img src="https://cdn.leuffen.de//leu-kdnlogos/v2/20/267-128_267/MVZ-GG.svg" alt="MVZ GG" height="48">
+    <img src="https://cdn.leuffen.de//leu-kdnlogos/v2/19/85-64_170/Praxis-Gromes.svg" alt="Praxis Gromes" height="48">
+    <img src="https://cdn.leuffen.de//leu-kdnlogos/v2/18/57-32_228/Gefaess-Gallis.svg" alt="Gefaess Gallis" height="48">
 
 </nxa-infiniscroll>
             `
