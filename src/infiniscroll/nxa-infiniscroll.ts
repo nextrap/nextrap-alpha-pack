@@ -101,12 +101,21 @@ class NxInfiniscroll extends HTMLElement {
         let top = null;
         this.container.addEventListener("pointerdown", (e) => {
             isDragging = true;
+            top = null;
 
             this.startX = e.pageX - this.container.offsetLeft;
             this.scrollLeftStart = this.container.scrollLeft;
             this.container.style.cursor = "grabbing";
             this.stopAutoScroll(); // Stop auto-scroll while dragging
 
+        });
+
+        this.container.addEventListener("pointerout", () => {
+            isDragging = false;
+            this.container.style.cursor = "grab";
+            if (this.autoScroll) {
+                this.startAutoScroll(); // Resume auto-scroll after mouse leaves
+            }
         });
 
         this.container.addEventListener("pointerup", () => {
