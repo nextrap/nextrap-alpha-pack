@@ -133,7 +133,7 @@ class NxInfiniscroll extends HTMLElement {
             if (top !== null)
                 window.scrollTo(0, top);
             const x = e.pageX - this.container.offsetLeft;
-            if (x > 0)
+            if (top === null && (x > 10 || x < -10))
                 top = window.scrollY; // Prevent only after first scroll right left
             const walk = (x - this.startX) * 1; // Scroll-fast multiplier
             this.container.scrollLeft = this.scrollLeftStart - walk;
