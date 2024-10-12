@@ -98,12 +98,16 @@ class NxInfiniscroll extends HTMLElement {
 
     private addDragEvents() {
         let isDragging = false;
+        let top = 0;
         this.container.addEventListener("pointerdown", (e) => {
+            top = window.scrollY;
             isDragging = true;
+
             this.startX = e.pageX - this.container.offsetLeft;
             this.scrollLeftStart = this.container.scrollLeft;
             this.container.style.cursor = "grabbing";
             this.stopAutoScroll(); // Stop auto-scroll while dragging
+
         });
 
         this.container.addEventListener("pointerup", () => {
@@ -126,9 +130,11 @@ class NxInfiniscroll extends HTMLElement {
         this.container.addEventListener("pointermove", (e) => {
             if (!isDragging) return;
             e.preventDefault();
+            window.scrollTo(0, top);
             const x = e.pageX - this.container.offsetLeft;
             const walk = (x - this.startX) * 1; // Scroll-fast multiplier
             this.container.scrollLeft = this.scrollLeftStart - walk;
+
         });
 
         this.container.addEventListener("mouseleave", () => {
