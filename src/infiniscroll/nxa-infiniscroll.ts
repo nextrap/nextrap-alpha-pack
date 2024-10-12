@@ -98,9 +98,8 @@ class NxInfiniscroll extends HTMLElement {
 
     private addDragEvents() {
         let isDragging = false;
-        let top = 0;
+        let top = null;
         this.container.addEventListener("pointerdown", (e) => {
-            top = window.scrollY;
             isDragging = true;
 
             this.startX = e.pageX - this.container.offsetLeft;
@@ -112,6 +111,7 @@ class NxInfiniscroll extends HTMLElement {
 
         this.container.addEventListener("pointerup", () => {
             isDragging = false;
+            top = null;
             this.container.style.cursor = "grab";
             if (this.snap) {
                 this.snapElements();
@@ -130,8 +130,11 @@ class NxInfiniscroll extends HTMLElement {
         this.container.addEventListener("pointermove", (e) => {
             if (!isDragging) return;
             e.preventDefault();
-            window.scrollTo(0, top);
+            if (top !== null)
+                window.scrollTo(0, top);
             const x = e.pageX - this.container.offsetLeft;
+            if (x > 0)
+                top = window.scrollY; // Prevent only after first scroll right left
             const walk = (x - this.startX) * 1; // Scroll-fast multiplier
             this.container.scrollLeft = this.scrollLeftStart - walk;
 
