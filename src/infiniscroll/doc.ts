@@ -14,17 +14,10 @@ registerComponent({
 
 
 <nxa-infiniscroll auto-scroll>
-    <img src="https://cdn.leuffen.de//leu-content/v2/48/139-87_dcba/Screenshot-2024-03-29-at-15-10-13-Praxis-Dr-med-Grazyna-Wnuk---hausaerztlich-internistische-Praxis-in-Berlin.webp">
-    <img src="https://cdn.leuffen.de//leu-content/v2/48/139-87_dcba/Screenshot-2024-03-29-at-15-10-13-Praxis-Dr-med-Grazyna-Wnuk---hausaerztlich-internistische-Praxis-in-Berlin.webp">
-    <img src="https://cdn.leuffen.de//leu-content/v2/48/139-87_dcba/Screenshot-2024-03-29-at-15-10-13-Praxis-Dr-med-Grazyna-Wnuk---hausaerztlich-internistische-Praxis-in-Berlin.webp">
-    <img src="https://cdn.leuffen.de//leu-content/v2/48/139-87_dcba/Screenshot-2024-03-29-at-15-10-13-Praxis-Dr-med-Grazyna-Wnuk---hausaerztlich-internistische-Praxis-in-Berlin.webp">
-    <img src="https://cdn.leuffen.de//leu-content/v2/48/139-87_dcba/Screenshot-2024-03-29-at-15-10-13-Praxis-Dr-med-Grazyna-Wnuk---hausaerztlich-internistische-Praxis-in-Berlin.webp">
-    <img src="https://cdn.leuffen.de//leu-content/v2/48/139-87_dcba/Screenshot-2024-03-29-at-15-10-13-Praxis-Dr-med-Grazyna-Wnuk---hausaerztlich-internistische-Praxis-in-Berlin.webp">
-    <img src="https://cdn.leuffen.de//leu-content/v2/48/139-87_dcba/Screenshot-2024-03-29-at-15-10-13-Praxis-Dr-med-Grazyna-Wnuk---hausaerztlich-internistische-Praxis-in-Berlin.webp">
-    <img src="https://cdn.leuffen.de//leu-content/v2/48/139-87_dcba/Screenshot-2024-03-29-at-15-10-13-Praxis-Dr-med-Grazyna-Wnuk---hausaerztlich-internistische-Praxis-in-Berlin.webp">
-    <img src="https://cdn.leuffen.de//leu-content/v2/48/139-87_dcba/Screenshot-2024-03-29-at-15-10-13-Praxis-Dr-med-Grazyna-Wnuk---hausaerztlich-internistische-Praxis-in-Berlin.webp">
-    <img src="https://cdn.leuffen.de//leu-content/v2/48/139-87_dcba/Screenshot-2024-03-29-at-15-10-13-Praxis-Dr-med-Grazyna-Wnuk---hausaerztlich-internistische-Praxis-in-Berlin.webp">
-    <img src="https://cdn.leuffen.de//leu-content/v2/48/139-87_dcba/Screenshot-2024-03-29-at-15-10-13-Praxis-Dr-med-Grazyna-Wnuk---hausaerztlich-internistische-Praxis-in-Berlin.webp">
+    <img src="https://cdn.leuffen.de//leu-kdnlogos/v2/20/267-128_267/MVZ-GG.svg" alt="MVZ GG">
+    <img src="https://cdn.leuffen.de//leu-kdnlogos/v2/19/85-64_170/Praxis-Gromes.svg" alt="Praxis Gromes">
+    <img src="https://cdn.leuffen.de//leu-kdnlogos/v2/18/57-32_228/Gefaess-Gallis.svg" alt="Gefaess Gallis">
+
 </nxa-infiniscroll>
             `
         }

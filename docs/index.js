@@ -9,7 +9,9 @@
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _src_input_nx_input_doc__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./src/input/nx-input.doc */ "./src/input/nx-input.doc.ts");
+/* harmony import */ var _src_lead_button_doc__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./src/lead-button/doc */ "./src/lead-button/doc.ts");
+/* harmony import */ var _src_infiniscroll_doc__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./src/infiniscroll/doc */ "./src/infiniscroll/doc.ts");
+
 
 
 
@@ -25,9 +27,13 @@ __webpack_require__.r(__webpack_exports__);
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   NxInput: () => (/* reexport safe */ _src_input_nx_input__WEBPACK_IMPORTED_MODULE_0__.NxInput)
+/* harmony export */   NxaLeadButton: () => (/* reexport safe */ _src_lead_button_nxa_lead_button__WEBPACK_IMPORTED_MODULE_0__.NxaLeadButton)
 /* harmony export */ });
-/* harmony import */ var _src_input_nx_input__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./src/input/nx-input */ "./src/input/nx-input.ts");
+/* harmony import */ var _src_lead_button_nxa_lead_button__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./src/lead-button/nxa-lead-button */ "./src/lead-button/nxa-lead-button.ts");
+/* harmony import */ var _src_infiniscroll_nxa_infiniscroll__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./src/infiniscroll/nxa-infiniscroll */ "./src/infiniscroll/nxa-infiniscroll.ts");
+/* harmony import */ var _src_lib_imageloader_image_loader__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./src/lib-imageloader/image-loader */ "./src/lib-imageloader/image-loader.ts");
+
+
 
 
 
@@ -35,10 +41,270 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./src/input/nx-input.doc.ts":
-/*!***********************************!*\
-  !*** ./src/input/nx-input.doc.ts ***!
-  \***********************************/
+/***/ "./src/infiniscroll/doc.ts":
+/*!*********************************!*\
+  !*** ./src/infiniscroll/doc.ts ***!
+  \*********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _nextrap_doc_visualizer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @nextrap/doc-visualizer */ "./workspaces/nextrap-doc-visualizer/index.ts");
+
+(0,_nextrap_doc_visualizer__WEBPACK_IMPORTED_MODULE_0__.registerComponent)({
+  package: "nxa-infiniscroll",
+  description: "Lead Button Component",
+  title: "NxaInfiniscroll",
+  examples: [
+    {
+      title: "Basic input2",
+      description: "Basic input example",
+      lang: "html",
+      // language=html
+      code: `
+
+
+<nxa-infiniscroll auto-scroll>
+    <img src="https://cdn.leuffen.de//leu-kdnlogos/v2/20/267-128_267/MVZ-GG.svg" alt="MVZ GG">
+    <img src="https://cdn.leuffen.de//leu-kdnlogos/v2/19/85-64_170/Praxis-Gromes.svg" alt="Praxis Gromes">
+    <img src="https://cdn.leuffen.de//leu-kdnlogos/v2/18/57-32_228/Gefaess-Gallis.svg" alt="Gefaess Gallis">
+    <img src="https://cdn.leuffen.de//leu-kdnlogos/v2/22/381-64_381.75/Prof-Salchow.svg" alt="Prof Salchow">
+    <img src="https://cdn.leuffen.de//leu-kdnlogos/v2/17/169-128_169/Praxis-Haake.svg" alt="Praxis Haake">
+    <img src="https://cdn.leuffen.de//leu-kdnlogos/v2/14/93-64_186/Gyn337.svg" alt="Gyn337">
+    <img src="https://cdn.leuffen.de//leu-kdnlogos/v2/13/273-128_273.78/Augenarzt-Elloumi.svg" alt="Augenarzt Elloumi">
+    <img src="https://cdn.leuffen.de//leu-kdnlogos/v2/12/7-4_224/Physio-Aktiv.svg" alt="Physio Aktiv">
+    <img src="https://cdn.leuffen.de//leu-kdnlogos/v2/11/113-32_452.88/Zahnaerzte-KK.svg" alt="Zahnaerzte KK">
+    <img src="https://cdn.leuffen.de//leu-kdnlogos/v2/21/42-17_420.284/Onkologie-Bad-Zwischenahn.svg" alt="Onkologie Bad Zwischenahn">
+    <img src="https://cdn.leuffen.de//leu-kdnlogos/v2/9/177-128_177.28/Praxis-Borchink.svg" alt="Praxis Borchink">
+    <img src="https://cdn.leuffen.de//leu-kdnlogos/v2/8/147-64_147.25/Praxis-Knabe.svg" alt="Praxis Knabe">
+    <img src="https://cdn.leuffen.de//leu-kdnlogos/v2/7/27-16_216/Zahnaerzte-Engelstrasse.svg" alt="Zahnaerzte Engelstrasse">
+    <img src="https://cdn.leuffen.de//leu-kdnlogos/v2/6/135-64_135.75/MVZ-Klettgau.svg" alt="MVZ Klettgau">
+    <img src="https://cdn.leuffen.de//leu-kdnlogos/v2/5/45-16_180/Praxis-Neumann-Hoehle.svg" alt="Praxis Neumann Hoehle">
+    <img src="https://cdn.leuffen.de//leu-kdnlogos/v2/4/87-64_87.833/CardioMed-Neheim.svg" alt="CardioMed Neheim">
+    <img src="https://cdn.leuffen.de//leu-kdnlogos/v2/3/15-4_240/Praxis-an-der-Papenburg.svg" alt="Praxis an der Papenburg">
+    <img src="https://cdn.leuffen.de//leu-kdnlogos/v2/2/125-32_250/Praxis-Grass.svg" alt="Praxis Grass">
+    <img src="https://cdn.leuffen.de//leu-kdnlogos/v2/1/163-63_207.599/Augenpraxis-Osman.svg" alt="Augenpraxis Osman">
+</nxa-infiniscroll>
+            `
+    }
+  ]
+});
+
+
+/***/ }),
+
+/***/ "./src/infiniscroll/nxa-infiniscroll.ts":
+/*!**********************************************!*\
+  !*** ./src/infiniscroll/nxa-infiniscroll.ts ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _kasimirjs_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @kasimirjs/core */ "./workspaces/kasi-core/index.ts");
+var __accessCheck = (obj, member, msg) => {
+  if (!member.has(obj))
+    throw TypeError("Cannot " + msg);
+};
+var __privateGet = (obj, member, getter) => {
+  __accessCheck(obj, member, "read from private field");
+  return getter ? getter.call(obj) : member.get(obj);
+};
+var __privateAdd = (obj, member, value) => {
+  if (member.has(obj))
+    throw TypeError("Cannot add the same private member more than once");
+  member instanceof WeakSet ? member.add(obj) : member.set(obj, value);
+};
+var __privateSet = (obj, member, value, setter) => {
+  __accessCheck(obj, member, "write to private field");
+  setter ? setter.call(obj, value) : member.set(obj, value);
+  return value;
+};
+var __async = (__this, __arguments, generator) => {
+  return new Promise((resolve, reject) => {
+    var fulfilled = (value) => {
+      try {
+        step(generator.next(value));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    var rejected = (value) => {
+      try {
+        step(generator.throw(value));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    var step = (x) => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
+    step((generator = generator.apply(__this, __arguments)).next());
+  });
+};
+var _autoScroll;
+
+class NxInfiniscroll extends HTMLElement {
+  constructor() {
+    super();
+    __privateAdd(this, _autoScroll, false);
+    const shadow = this.attachShadow({ mode: "open" });
+    const slot = document.createElement("slot");
+    slot.name = "scrollslot";
+    slot.style.display = "flex";
+    slot.style.overflow = "hidden";
+    slot.style.cursor = "grab";
+    slot.style.userSelect = "none";
+    shadow.appendChild(slot);
+    this.container = slot;
+    this.autoScroll = this.hasAttribute("auto-scroll");
+    this.snap = this.hasAttribute("snap");
+    this.stopOnHover = this.hasAttribute("stop-on-hover");
+    this.easeStopOnDrag = this.hasAttribute("ease-stop-on-drag");
+    this.slowDownOnStop = this.hasAttribute("slow-down-on-stop");
+    this.accelerationFactor = parseFloat(this.getAttribute("acceleration-factor") || "0.1");
+    this.scrollSpeed = parseFloat(this.getAttribute("scroll-speed") || "1");
+    this.scrollInterval = null;
+    this.observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          this.repopulate(entry.target);
+        }
+      });
+    }, { threshold: 1 });
+  }
+  connectedCallback() {
+    Array.from(this.children).forEach((child) => {
+      const clonedChild = child.cloneNode(true);
+      clonedChild.draggable = false;
+      clonedChild.setAttribute("slot", "scrollslot");
+      clonedChild.style.userSelect = "none";
+      this.appendChild(clonedChild);
+      this.observer.observe(clonedChild);
+    });
+    this.addDragEvents();
+    if (this.stopOnHover) {
+      this.addHoverEvents();
+    }
+    if (this.autoScroll) {
+      this.startAutoScroll();
+    }
+  }
+  disconnectedCallback() {
+    this.stopAutoScroll();
+  }
+  repopulate(element) {
+    if (this.container.scrollLeft + this.container.clientWidth >= this.container.scrollWidth) {
+      element.draggable = false;
+      element.style.userSelect = "none";
+      this.appendChild(element);
+    } else if (this.container.scrollLeft === 0) {
+      element.draggable = false;
+      element.style.userSelect = "none";
+      this.insertBefore(element, this.firstChild);
+    }
+  }
+  addDragEvents() {
+    let isDragging = false;
+    this.container.addEventListener("mousedown", (e) => {
+      isDragging = true;
+      this.startX = e.pageX - this.container.offsetLeft;
+      this.scrollLeftStart = this.container.scrollLeft;
+      this.container.style.cursor = "grabbing";
+      this.stopAutoScroll();
+    });
+    this.container.addEventListener("mouseup", () => {
+      isDragging = false;
+      this.container.style.cursor = "grab";
+      if (this.snap) {
+        this.snapElements();
+      }
+      if (this.easeStopOnDrag) {
+        this.container.scrollTo({ left: this.scrollLeftStart, behavior: "smooth" });
+      }
+      if (this.slowDownOnStop) {
+        this.slowScrollStop();
+      }
+      if (this.autoScroll) {
+        this.startAutoScroll();
+      }
+    });
+    this.container.addEventListener("mousemove", (e) => {
+      if (!isDragging)
+        return;
+      e.preventDefault();
+      const x = e.pageX - this.container.offsetLeft;
+      const walk = (x - this.startX) * 1;
+      this.container.scrollLeft = this.scrollLeftStart - walk;
+    });
+    this.container.addEventListener("mouseleave", () => {
+      isDragging = false;
+      this.container.style.cursor = "grab";
+      if (this.autoScroll) {
+        this.startAutoScroll();
+      }
+    });
+  }
+  addHoverEvents() {
+    this.container.addEventListener("mouseenter", () => {
+      this.stopAutoScroll();
+    });
+    this.container.addEventListener("mouseleave", () => {
+      if (this.autoScroll) {
+        this.startAutoScroll();
+      }
+    });
+  }
+  startAutoScroll() {
+    if (__privateGet(this, _autoScroll) === true)
+      return;
+    __privateSet(this, _autoScroll, true);
+    let index = 0;
+    const animate = () => __async(this, null, function* () {
+      yield (0,_kasimirjs_core__WEBPACK_IMPORTED_MODULE_0__.ka_sleep)(30);
+      this.container.scrollLeft += this.scrollSpeed;
+      if (this.container.scrollLeft + this.container.clientWidth >= this.container.scrollWidth) {
+        this.container.scrollLeft = 0;
+      }
+      if (__privateGet(this, _autoScroll))
+        requestAnimationFrame(animate);
+    });
+    requestAnimationFrame(animate);
+  }
+  stopAutoScroll() {
+    __privateSet(this, _autoScroll, false);
+  }
+  slowScrollStop() {
+    let currentSpeed = this.scrollSpeed;
+    const decelerate = () => {
+      if (currentSpeed > 0.1) {
+        currentSpeed *= 0.9;
+        this.container.scrollLeft += currentSpeed;
+        requestAnimationFrame(decelerate);
+      }
+    };
+    decelerate();
+  }
+  snapElements() {
+    const children = Array.from(this.querySelectorAll('[slot="scrollslot"]'));
+    let closest = children[0];
+    let minOffset = Math.abs(closest.offsetLeft - this.container.scrollLeft);
+    children.forEach((child) => {
+      const offset = Math.abs(child.offsetLeft - this.container.scrollLeft);
+      if (offset < minOffset) {
+        closest = child;
+        minOffset = offset;
+      }
+    });
+    this.container.scrollTo({ left: closest.offsetLeft, behavior: "smooth" });
+  }
+}
+_autoScroll = new WeakMap();
+customElements.define("nxa-infiniscroll", NxInfiniscroll);
+
+
+/***/ }),
+
+/***/ "./src/lead-button/doc.ts":
+/*!********************************!*\
+  !*** ./src/lead-button/doc.ts ***!
+  \********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -46,17 +312,31 @@ __webpack_require__.r(__webpack_exports__);
 
 (0,_nextrap_doc_visualizer__WEBPACK_IMPORTED_MODULE_0__.registerComponent)({
   package: "input",
-  description: "Input component",
-  title: "NxInput",
+  description: "Lead Button Component",
+  title: "NxaLeadButton",
   examples: [
     {
       title: "Basic input",
       description: "Basic input example",
       lang: "html",
+      // language=html
       code: `
-<nx-input label="Input Label" placeholder="Input Placeholder"></nx-input>
-<nx-input label="Input Label" placeholder="Input Placeholder" ></nx-input>
-<nx-input label="Input Label" placeholder="Input Placeholder2" ></nx-input>`
+
+<nxa-lead-button href="#test" spacer icon="bi bi-wrench shadow" title="Click here, bitch" subtitle="Go on and on and on"></nxa-lead-button>
+<nxa-lead-button class="icon-top" icon="bi bi-wrench shadow" title="Click here, bitch" subtitle="Go on and on and on"></nxa-lead-button>
+
+<nxa-lead-button class="" label="Input Label" placeholder="Input Placeholder">
+    <i class="bi-alarm " slot="icon"></i>
+    <div>Hello world</div>
+    <div>second line</div>
+</nxa-lead-button>
+
+<nxa-lead-button class="inverted-icon wave" label="Input Label" placeholder="Input Placeholder">
+    <i class="bi-alarm " slot="icon"></i>
+    <div>Hello world</div>
+    <div>second line</div>
+</nxa-lead-button>
+`
     },
     {
       title: "Input with value",
@@ -70,18 +350,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./src/input/nx-input.ts":
-/*!*******************************!*\
-  !*** ./src/input/nx-input.ts ***!
-  \*******************************/
+/***/ "./src/lead-button/nxa-lead-button.ts":
+/*!********************************************!*\
+  !*** ./src/lead-button/nxa-lead-button.ts ***!
+  \********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   NxInput: () => (/* binding */ NxInput)
+/* harmony export */   NxaLeadButton: () => (/* binding */ NxaLeadButton)
 /* harmony export */ });
 /* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
 /* harmony import */ var lit_decorators_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lit/decorators.js */ "./node_modules/lit/decorators.js");
+/* harmony import */ var _style__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./style */ "./src/lead-button/style.ts");
+/* harmony import */ var _kasimirjs_core_src_create_element__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @kasimirjs/core/src/create-element */ "./workspaces/kasi-core/src/create-element.ts");
+/* harmony import */ var _kasimirjs_core_src_await_dom_ready__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @kasimirjs/core/src/await/dom-ready */ "./workspaces/kasi-core/src/await/dom-ready.ts");
+/* harmony import */ var _kasimirjs_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @kasimirjs/core */ "./workspaces/kasi-core/index.ts");
 var __defProp = Object.defineProperty;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __decorateClass = (decorators, target, key, kind) => {
@@ -93,78 +377,399 @@ var __decorateClass = (decorators, target, key, kind) => {
     __defProp(target, key, result);
   return result;
 };
+var __accessCheck = (obj, member, msg) => {
+  if (!member.has(obj))
+    throw TypeError("Cannot " + msg);
+};
+var __privateAdd = (obj, member, value) => {
+  if (member.has(obj))
+    throw TypeError("Cannot add the same private member more than once");
+  member instanceof WeakSet ? member.add(obj) : member.set(obj, value);
+};
+var __privateMethod = (obj, member, method) => {
+  __accessCheck(obj, member, "access private method");
+  return method;
+};
+var __async = (__this, __arguments, generator) => {
+  return new Promise((resolve, reject) => {
+    var fulfilled = (value) => {
+      try {
+        step(generator.next(value));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    var rejected = (value) => {
+      try {
+        step(generator.throw(value));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    var step = (x) => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
+    step((generator = generator.apply(__this, __arguments)).next());
+  });
+};
+var _renderContent, renderContent_fn, _renderButton, renderButton_fn, _renderLink, renderLink_fn, _applyClasses, applyClasses_fn;
 
 
-let NxInput = class extends lit__WEBPACK_IMPORTED_MODULE_0__.LitElement {
+
+
+
+
+let NxaLeadButton = class extends lit__WEBPACK_IMPORTED_MODULE_0__.LitElement {
   constructor() {
     super(...arguments);
-    this.label = "";
-    this.value = "";
-    this.options = "";
-    this.placeholder = "";
-    this.isFloating = false;
-    this.isSelect = false;
-    this.validationMessage = "";
-  }
-  parseOptions() {
-    try {
-      return JSON.parse(this.options);
-    } catch (e) {
-      return this.options.split(",");
-    }
+    __privateAdd(this, _renderContent);
+    __privateAdd(this, _renderButton);
+    __privateAdd(this, _renderLink);
+    __privateAdd(this, _applyClasses);
+    this.href = "";
+    this.target = "";
+    this.title = "";
+    this.spacer = false;
+    this.subtitle = "";
+    this.icon = "";
+    this.type = "";
   }
   render() {
-    return (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
-            <div class="mb-3 ${this.isFloating ? "form-floating" : ""}">
-                ${this.isSelect ? (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
-                    <select class="form-control" .value="${this.value}">
-                        ${this.parseOptions().map((option) => (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
-                            <option>${option}</option>`)}
-                    </select>
-                ` : (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
-                    <input type="text" class="form-control" placeholder="${this.placeholder}" .value="${this.value}">
-                `}
-                ${this.label && !this.isFloating ? (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<label>${this.label}</label>` : ""}
-                ${this.isFloating ? (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<label>${this.label}</label>` : ""}
-                ${this.validationMessage ? (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
-                    <div class="invalid-feedback">${this.validationMessage}</div>` : ""}
-            </div>
-        `;
+    if (!this.firstElementChild) {
+      if (this.icon) {
+        this.append((0,_kasimirjs_core_src_create_element__WEBPACK_IMPORTED_MODULE_3__.ka_create_element)("i", { class: this.icon, slot: "icon" }));
+      }
+      if (this.title) {
+        this.append((0,_kasimirjs_core_src_create_element__WEBPACK_IMPORTED_MODULE_3__.ka_create_element)("div", { class: "title" }, this.title));
+      }
+      if (this.spacer) {
+        this.append((0,_kasimirjs_core_src_create_element__WEBPACK_IMPORTED_MODULE_3__.ka_create_element)("div", { class: "spacer" }));
+      }
+      if (this.subtitle) {
+        this.append((0,_kasimirjs_core_src_create_element__WEBPACK_IMPORTED_MODULE_3__.ka_create_element)("div", { class: "subtitle" }, this.subtitle));
+      }
+    }
+    (() => __async(this, null, function* () {
+      yield (0,_kasimirjs_core__WEBPACK_IMPORTED_MODULE_5__.ka_sleep)(100);
+    }))();
+    __privateMethod(this, _applyClasses, applyClasses_fn).call(this);
+    return this.href ? __privateMethod(this, _renderLink, renderLink_fn).call(this) : __privateMethod(this, _renderButton, renderButton_fn).call(this);
   }
 };
-NxInput.styles = (0,lit__WEBPACK_IMPORTED_MODULE_0__.css)`
-        .form-floating label {
-            color: #6c757d;
+_renderContent = new WeakSet();
+renderContent_fn = function() {
+  return (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
+            <slot name="icon" class="icon-section"></slot>
+            <div class="text-section">
+                <slot></slot>
+            </div>`;
+};
+_renderButton = new WeakSet();
+renderButton_fn = function() {
+  return (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<button type="${this.type}" class="lead-button">${__privateMethod(this, _renderContent, renderContent_fn).call(this)}</button>`;
+};
+_renderLink = new WeakSet();
+renderLink_fn = function() {
+  return (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<a href="${this.href}" target="${this.target}"><div class="lead-button">
+            ${__privateMethod(this, _renderContent, renderContent_fn).call(this)}</div></a>`;
+};
+_applyClasses = new WeakSet();
+applyClasses_fn = function() {
+  return __async(this, null, function* () {
+    yield (0,_kasimirjs_core_src_await_dom_ready__WEBPACK_IMPORTED_MODULE_4__.ka_dom_ready)();
+    let classes = (getComputedStyle(this).getPropertyValue("--classes") || "").trim().split(" ").filter((c) => c.trim() !== "");
+    this.classList.add(...classes);
+  });
+};
+NxaLeadButton.styles = _style__WEBPACK_IMPORTED_MODULE_2__.style;
+__decorateClass([
+  (0,lit_decorators_js__WEBPACK_IMPORTED_MODULE_1__.property)()
+], NxaLeadButton.prototype, "href", 2);
+__decorateClass([
+  (0,lit_decorators_js__WEBPACK_IMPORTED_MODULE_1__.property)()
+], NxaLeadButton.prototype, "target", 2);
+__decorateClass([
+  (0,lit_decorators_js__WEBPACK_IMPORTED_MODULE_1__.property)()
+], NxaLeadButton.prototype, "title", 2);
+__decorateClass([
+  (0,lit_decorators_js__WEBPACK_IMPORTED_MODULE_1__.property)({ type: Boolean })
+], NxaLeadButton.prototype, "spacer", 2);
+__decorateClass([
+  (0,lit_decorators_js__WEBPACK_IMPORTED_MODULE_1__.property)()
+], NxaLeadButton.prototype, "subtitle", 2);
+__decorateClass([
+  (0,lit_decorators_js__WEBPACK_IMPORTED_MODULE_1__.property)()
+], NxaLeadButton.prototype, "icon", 2);
+__decorateClass([
+  (0,lit_decorators_js__WEBPACK_IMPORTED_MODULE_1__.property)()
+], NxaLeadButton.prototype, "type", 2);
+NxaLeadButton = __decorateClass([
+  (0,lit_decorators_js__WEBPACK_IMPORTED_MODULE_1__.customElement)("nxa-lead-button")
+], NxaLeadButton);
+
+
+/***/ }),
+
+/***/ "./src/lead-button/style.ts":
+/*!**********************************!*\
+  !*** ./src/lead-button/style.ts ***!
+  \**********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   style: () => (/* binding */ style)
+/* harmony export */ });
+/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
+
+const style = (0,lit__WEBPACK_IMPORTED_MODULE_0__.css)`
+
+    :host{
+        --classes: 'icon-start shadow';
+        --icon-background: #f5f5f5;
+        --icon-text-color: #000;
+        --background-color: #f5f5f5;
+        --text-color: #000;
+        --border-radius: 0.5em;
+        --text-space: 1em;
+        --title-font-size: 1.4em;
+        --subtitle-font-size: 1em;
+        --icon-font-size: 2.5em;
+        --icon-padding: .8em;
+        --border: 1px solid #000;
+        --display: inline-block;
+        --box-shadow: 0 0 5px rgba(0, 0, 0, 0.6);
+        --white-space: wrap;
+        --wave-color: #a34444;
+
+        display: var(--display);
+
+    }
+
+    :host(.inverted-icon) {
+        .lead-button {
+            .icon-section {
+                background-color: var(--text-color);
+                color: var(--icon-text-color);
+                &::slotted(i) {
+                    color: var(--icon-background);
+                }
+            }
+            .text-section {
+                padding: 0 var(--text-space)  ; // Left and right
+            }
+        }
+    }
+
+
+    :host(.icon-top) {
+        .lead-button {
+            flex-direction: column;
+
+            .icon-section {
+                aspect-ratio: unset;
+            }
+            .text-section {
+                margin: 0 var(--text-space) var(--text-space) var(--text-space);
+
+            }
+        }
+    }
+
+
+    :host(.shadow) {
+        .lead-button {
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+    }
+
+    :host(.wave) {
+        .lead-button {
+            &:before {
+                content: '';
+                position: absolute;
+                z-index: 1;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(
+                    to right,
+                    transparent 0%,
+                    var(--wave-color) 50%,
+                    transparent 100%
+                );
+                animation: wave 15s infinite;
+            }
         }
 
-        .form-floating .form-control {
-            padding: 1.5rem 0.75rem;
+    }
+
+    a {
+        text-decoration: none;
+        font: inherit;
+        display: inline-block;
+        padding: 0;
+        margin: 0;
+
+        font-size: unset;
+        width: 100%;
+    }
+    button {
+        padding: 0;
+        margin: 0;
+        font: inherit;
+        width: 100%;
+        font-size: unset;
+        border: none;
+        background: none;
+        cursor: pointer;
+
+    }
+
+    .lead-button {
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        border: var(--border);
+        border-radius: var(--border-radius);
+        display: flex;
+        align-items: center;
+        box-shadow: var(--box-shadow);
+        background-color: var(--background-color);
+        color: var(--text-color);
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        transition: filter 0.1s ease, transform 0.1s ease;
+
+
+        &:hover {
+            filter: brightness(0.93);
+            transform: scale(1.02);
         }
-    `;
-__decorateClass([
-  (0,lit_decorators_js__WEBPACK_IMPORTED_MODULE_1__.property)()
-], NxInput.prototype, "label", 2);
-__decorateClass([
-  (0,lit_decorators_js__WEBPACK_IMPORTED_MODULE_1__.property)()
-], NxInput.prototype, "value", 2);
-__decorateClass([
-  (0,lit_decorators_js__WEBPACK_IMPORTED_MODULE_1__.property)()
-], NxInput.prototype, "options", 2);
-__decorateClass([
-  (0,lit_decorators_js__WEBPACK_IMPORTED_MODULE_1__.property)()
-], NxInput.prototype, "placeholder", 2);
-__decorateClass([
-  (0,lit_decorators_js__WEBPACK_IMPORTED_MODULE_1__.property)({ type: Boolean })
-], NxInput.prototype, "isFloating", 2);
-__decorateClass([
-  (0,lit_decorators_js__WEBPACK_IMPORTED_MODULE_1__.property)({ type: Boolean })
-], NxInput.prototype, "isSelect", 2);
-__decorateClass([
-  (0,lit_decorators_js__WEBPACK_IMPORTED_MODULE_1__.property)()
-], NxInput.prototype, "validationMessage", 2);
-NxInput = __decorateClass([
-  (0,lit_decorators_js__WEBPACK_IMPORTED_MODULE_1__.customElement)("nx-input")
-], NxInput);
+        &:active {
+            filter: brightness(0.8);
+        }
+
+        .icon-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--icon-background);
+            color: var(--icon-text-color);
+            width: auto;
+            height: auto;
+
+
+            padding: var(--icon-padding);
+            aspect-ratio: 1;
+
+            &::slotted(i) {
+                color: var(--icon-color);
+                font-size: var(--icon-font-size);
+
+
+            }
+
+        }
+
+        .text-section {
+            text-align: left;
+            margin: 0 var(--text-space) 0 0; // default only right
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            white-space: var(--white-space); /* Prevents breaking the content */
+
+            ::slotted(.title) {
+                font-size: var(--title-font-size);
+                font-weight: bold;
+            }
+
+            ::slotted(.subtitle) {
+                font-size: var(--subtitle-font-size);
+                color: lighten($primary-text-color, 20%);
+
+            }
+        }
+    }
+
+    @keyframes wave {
+        0% {
+            left: -100%;
+        }
+        25% {
+            left: -100%;
+        }
+        35% {
+            left: 100%;
+        }
+        60% {
+            left: 100%;
+        }
+        100% {
+            left: 100%;
+        }
+    }
+
+    /* Optional Separator */
+
+    .spacer {
+        width: 100%;
+        border: none;
+        border-top: 1px solid lighten($primary-text-color, 20%);
+        margin: 0.25em 0;
+    }
+
+`;
+
+
+/***/ }),
+
+/***/ "./src/lib-imageloader/image-loader.ts":
+/*!*********************************************!*\
+  !*** ./src/lib-imageloader/image-loader.ts ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _kasimirjs_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @kasimirjs/core */ "./workspaces/kasi-core/index.ts");
+var __async = (__this, __arguments, generator) => {
+  return new Promise((resolve, reject) => {
+    var fulfilled = (value) => {
+      try {
+        step(generator.next(value));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    var rejected = (value) => {
+      try {
+        step(generator.throw(value));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    var step = (x) => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
+    step((generator = generator.apply(__this, __arguments)).next());
+  });
+};
+
+const observeImageModifications = () => __async(undefined, null, function* () {
+  yield (0,_kasimirjs_core__WEBPACK_IMPORTED_MODULE_0__.ka_body)();
+  const observer = new MutationObserver((mutationsList) => {
+    for (const mutation of mutationsList) {
+      if (mutation.type === "childList") {
+        mutation.addedNodes.forEach((node) => {
+          if (node.nodeName === "IMG") {
+            node.removeAttribute("src");
+          }
+        });
+      }
+    }
+  });
+  observer.observe(document.body, { childList: true, subtree: true });
+});
+observeImageModifications();
 
 
 /***/ }),
@@ -183,7 +788,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   ka_defaultBreakpoints: () => (/* reexport safe */ _src_breakpoints__WEBPACK_IMPORTED_MODULE_0__.ka_defaultBreakpoints),
 /* harmony export */   ka_dom_ready: () => (/* reexport safe */ _src_await_dom_ready__WEBPACK_IMPORTED_MODULE_4__.ka_dom_ready),
 /* harmony export */   ka_getBreakPoint: () => (/* reexport safe */ _src_breakpoints__WEBPACK_IMPORTED_MODULE_0__.ka_getBreakPoint),
-/* harmony export */   ka_position_widget: () => (/* reexport safe */ _src_widget_position__WEBPACK_IMPORTED_MODULE_2__.ka_position_widget)
+/* harmony export */   ka_position_widget: () => (/* reexport safe */ _src_widget_position__WEBPACK_IMPORTED_MODULE_2__.ka_position_widget),
+/* harmony export */   ka_sleep: () => (/* reexport safe */ _src_await_sleep__WEBPACK_IMPORTED_MODULE_6__.ka_sleep)
 /* harmony export */ });
 /* harmony import */ var _src_breakpoints__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./src/breakpoints */ "./workspaces/kasi-core/src/breakpoints.ts");
 /* harmony import */ var _src_debouncer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./src/debouncer */ "./workspaces/kasi-core/src/debouncer.ts");
@@ -191,6 +797,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _src_create_element__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./src/create-element */ "./workspaces/kasi-core/src/create-element.ts");
 /* harmony import */ var _src_await_dom_ready__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./src/await/dom-ready */ "./workspaces/kasi-core/src/await/dom-ready.ts");
 /* harmony import */ var _src_await_body__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./src/await/body */ "./workspaces/kasi-core/src/await/body.ts");
+/* harmony import */ var _src_await_sleep__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./src/await/sleep */ "./workspaces/kasi-core/src/await/sleep.ts");
+
 
 
 
@@ -277,6 +885,49 @@ function ka_dom_ready() {
       if (document.readyState === "complete" || document.readyState === "interactive")
         return resolve("loaded");
       document.addEventListener("DOMContentLoaded", () => resolve("DOMContentLoaded"));
+    });
+  });
+}
+
+
+/***/ }),
+
+/***/ "./workspaces/kasi-core/src/await/sleep.ts":
+/*!*************************************************!*\
+  !*** ./workspaces/kasi-core/src/await/sleep.ts ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ka_sleep: () => (/* binding */ ka_sleep)
+/* harmony export */ });
+var __async = (__this, __arguments, generator) => {
+  return new Promise((resolve, reject) => {
+    var fulfilled = (value) => {
+      try {
+        step(generator.next(value));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    var rejected = (value) => {
+      try {
+        step(generator.throw(value));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    var step = (x) => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
+    step((generator = generator.apply(__this, __arguments)).next());
+  });
+};
+function ka_sleep(sleepms) {
+  return __async(this, null, function* () {
+    return new Promise((resolve) => {
+      window.setTimeout(() => {
+        return resolve();
+      }, sleepms);
     });
   });
 }
@@ -591,6 +1242,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var lit_decorators_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lit/decorators.js */ "./node_modules/lit/decorators.js");
 /* harmony import */ var _nextrap_registry__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../nextrap-registry */ "./workspaces/nextrap-doc-visualizer/src/nextrap-registry.ts");
 /* harmony import */ var _kasimirjs_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @kasimirjs/core */ "./workspaces/kasi-core/index.ts");
+/* harmony import */ var _kasimirjs_core_src_await_dom_ready__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @kasimirjs/core/src/await/dom-ready */ "./workspaces/kasi-core/src/await/dom-ready.ts");
 var __defProp = Object.defineProperty;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __decorateClass = (decorators, target, key, kind) => {
@@ -633,35 +1285,23 @@ let PackageComponent = class extends lit__WEBPACK_IMPORTED_MODULE_0__.LitElement
     this.package = "undefined";
   }
   render() {
-    return __async(this, null, function* () {
-      yield (0,_kasimirjs_core__WEBPACK_IMPORTED_MODULE_3__.ka_dom_ready)();
+    (() => __async(this, null, function* () {
+      yield (0,_kasimirjs_core_src_await_dom_ready__WEBPACK_IMPORTED_MODULE_4__.ka_dom_ready)();
       _nextrap_registry__WEBPACK_IMPORTED_MODULE_2__.Nextrap.map((description) => {
-        this.appendChild((0,_kasimirjs_core__WEBPACK_IMPORTED_MODULE_3__.ka_create_element)("nx-doc-visualizer", { package: description.package, slot: "ex" + description.package }));
+        this.appendChild((0,_kasimirjs_core__WEBPACK_IMPORTED_MODULE_3__.ka_create_element)("nx-doc-visualizer", { package: description.package }));
       });
-      return (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
+    }))();
+    return (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
             <div id="component-container">
-                ${_nextrap_registry__WEBPACK_IMPORTED_MODULE_2__.Nextrap.map(
-        (description) => (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
-
-
-                              ${description.examples.map(
-          (example) => (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
-                                        <slot .name=${"ex" + description.package}></slot>`
-        )}
-
-                        `
-      )}
+                <slot></slot>
             </div>
         `;
-    });
   }
 };
 PackageComponent.styles = (0,lit__WEBPACK_IMPORTED_MODULE_0__.css)`
     .package-section {
       margin-bottom: 20px;
-    }
-
-  `;
+    }`;
 __decorateClass([
   (0,lit_decorators_js__WEBPACK_IMPORTED_MODULE_1__.property)({ type: String })
 ], PackageComponent.prototype, "package", 2);
@@ -4806,6 +5446,8 @@ __webpack_require__.r(__webpack_exports__);
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
+(() => {
 /*!***********************!*\
   !*** ./docs/index.ts ***!
   \***********************/
@@ -4816,6 +5458,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+})();
 
 /******/ })()
 ;
