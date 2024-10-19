@@ -6,8 +6,8 @@ registerComponent({
     title: "NxaInfiniscroll",
     examples: [
         {
-            title: "Basic input2",
-            description: "Basic input example",
+            title: "Buttonbar",
+            description: "Basic example",
             lang: "html",
             // language=html
             code: `
