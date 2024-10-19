@@ -51,9 +51,9 @@ export class NxaLeadButton extends LitElement {
     }
 
 
-    render() {
-
-        if (!this.firstElementChild) {
+    connectedCallback() {
+        if (!this.hasChildNodes()) {
+            console.log("No child nodes", this);
             if (this.icon) {
                 this.append(ka_create_element('i', {class: this.icon, slot: 'icon'}));
             }
@@ -67,6 +67,12 @@ export class NxaLeadButton extends LitElement {
                 this.append(ka_create_element('div', {class: 'subtitle'}, this.subtitle));
             }
         }
+        super.connectedCallback();
+    }
+
+    render() {
+
+
 
         (async () => {
             await ka_sleep(100);
