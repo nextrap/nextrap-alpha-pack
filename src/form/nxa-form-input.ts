@@ -1,304 +1,361 @@
-import { html, LitElement } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
-import { styleInput } from './style-form-input';
+import {html, LitElement} from 'lit';
+import {customElement, property, state} from 'lit/decorators.js';
+import {styleInput} from './style-form-input';
+
+type SelectOption = {
+    key?: string;
+    value: string;
+} | {
+    [key: string]: string;
+} | string;
 
 @customElement('nxa-form-input')
 export class NxaFormInput extends LitElement {
     static styles = styleInput;
 
     @property() label = '';
-    @property() placeholder = '';
-    @property() value = '';
     @property() name = '';
     @property() type = 'text';
     @property() size: 'sm' | 'md' | 'lg' = 'md';
     @property({ type: Boolean }) required = false;
-    @property({ type: Boolean }) disabled = false;
-    @property({ type: Boolean }) readonly = false;
     @property({ type: Boolean }) floating = false;
-    @property({ type: Boolean }) checked = false;
-    @property() min = '';
-    @property() max = '';
-    @property() step = '';
+    @property({ type: Boolean }) inline = false;
     @property() helperText = '';
     @property() switchStyle: 'classic' | 'modern' = 'classic';
+    @property() invalidFeedback = 'Please provide a valid value';
+    @property() validFeedback = 'Looks good!';
+
+    @property({
+        attribute: 'select-options',
+        converter: {
+            fromAttribute: (value: string) => {
+                if (!value) return [];
+                try {
+                    return JSON.parse(value);
+                } catch (e) {
+                    console.warn('Invalid JSON in select-options:', e);
+                    return [];
+                }
+            },
+            toAttribute: (value: SelectOption[]) => {
+                try {
+                    return JSON.stringify(value);
+                } catch (e) {
+                    return '[]';
+                }
+            }
+        }
+    })
+    selectOptions: SelectOption[] = [];
 
     @state() private touched = false;
     @state() private valid = false;
     @state() private invalid = false;
     @state() private isEmpty = true;
 
-    private getInputClasses() {
-        const classes = [];
+    private input: HTMLInputElement | HTMLSelectElement | null = null;
 
-        if (this.type === 'checkbox' || this.type === 'radio') {
-            classes.push('form-check-input');
-            if (this.switchStyle === 'modern') classes.push('switch-input');
-        } else {
-            classes.push('form-control');
-            if (this.size !== 'md') classes.push(`form-control-${this.size}`);
-        }
-
-        if (this.touched || this.invalid) {
-            if (this.required || !this.isEmpty) {
-                if (this.valid) classes.push('is-valid');
-                if (this.invalid) classes.push('is-invalid');
-            }
-        }
-
-        return classes.join(' ');
+    // Public property to get input
+    get inputElement(): HTMLInputElement | HTMLSelectElement | null {
+        return this.input;
     }
 
-    private getLabelClasses() {
-        const classes = [];
-        if (this.type === 'checkbox' || this.type === 'radio') {
-            classes.push('form-check-label');
-            if (this.switchStyle === 'modern') classes.push('switch-label');
-        } else {
-            classes.push('form-label');
-        }
-        return classes.join(' ');
-    }
-
-    private get _uniqueId() {
-        return this.name || Math.random().toString(36).substring(2, 11);
-    }
-
-    private _handleInput(e: Event) {
-        const target = e.target as HTMLInputElement;
-        this.value = target.value;
-        this.isEmpty = !this.value;
-        this._validate();
-        this.dispatchEvent(new CustomEvent('input', {
-            detail: { value: this.value },
-            bubbles: true,
-            composed: true
-        }));
-    }
-
-    private _handleChange(e: Event) {
-        const target = e.target as HTMLInputElement;
-
-        if (this.type === 'radio') {
-            const form = this.closest('nxa-form');
-            if (form) {
-                const radios = form.querySelectorAll(`nxa-form-input[type="radio"][name="${this.name}"]`);
-                radios.forEach((radio: NxaFormInput) => {
-                    if (radio !== this) {
-                        radio.checked = false;
-                    }
-                });
-            }
-        }
-
-        this.checked = target.checked;
-        this.isEmpty = false;
-        this._validate();
-        this.dispatchEvent(new CustomEvent('change', {
-            detail: { checked: this.checked },
-            bubbles: true,
-            composed: true
-        }));
-    }
-
-    private _handleBlur() {
-        this.touched = true;
-        this._validate();
-    }
-
+    // Public validation method
     public validateOnSubmit(): boolean {
+        if (!this.input) return false;
         this.touched = true;
-        this._validate();
-        return this.valid;
+        return this._validate(this.input);
     }
 
-    private _validate() {
-        const input = this.shadowRoot?.querySelector('input');
-        if (!input) return false;
+    private updateFloatingState(input: HTMLInputElement | HTMLSelectElement) {
+        if (!this.floating) return;
 
-        // Skip validation for range inputs
-        if (this.type === 'range') {
-            this.valid = true;
-            this.invalid = false;
-            return true;
+        const floatingDiv = this.shadowRoot?.querySelector('.form-floating');
+        if (floatingDiv) {
+            if (input.value) {
+                floatingDiv.classList.add('has-value');
+            } else {
+                floatingDiv.classList.remove('has-value');
+            }
         }
+    }
 
-        if (this.type !== 'checkbox' && this.type !== 'radio') {
-            this.isEmpty = !this.value;
-
-            if (this.required && this.isEmpty) {
-                this.valid = false;
-                this.invalid = true;
-                return false;
-            }
-
-            if (!this.required && this.isEmpty) {
-                this.valid = false;
-                this.invalid = false;
-                return true;
-            }
-
-            this.valid = input.checkValidity();
-            this.invalid = !this.valid;
-            return this.valid;
-        } else if (this.type === 'radio') {
-            if (this.required) {
-                const form = this.closest('nxa-form');
-                if (form) {
-                    const radios = form.querySelectorAll(`nxa-form-input[type="radio"][name="${this.name}"]`);
-                    let anyChecked = false;
-
-                    radios.forEach((radio: NxaFormInput) => {
-                        if (radio.checked) {
-                            anyChecked = true;
+    createRenderRoot() {
+        const root = super.createRenderRoot();
+        root.addEventListener('click', (e) => {
+            const label = e.target as HTMLLabelElement;
+            if (label.tagName === 'LABEL') {
+                const slot = this.shadowRoot?.querySelector('slot[name="input"]') as HTMLSlotElement;
+                if (slot) {
+                    const elements = slot.assignedElements();
+                    const input = elements[0] as HTMLInputElement | HTMLSelectElement;
+                    if (input) {
+                        input.focus();
+                        if (input instanceof HTMLInputElement && (input.type === 'checkbox' || input.type === 'radio')) {
+                            input.click();
                         }
-                    });
-
-                    radios.forEach((radio: NxaFormInput) => {
-                        radio.valid = anyChecked;
-                        radio.invalid = !anyChecked;
-                    });
-
-                    return anyChecked;
+                    }
                 }
             }
-        } else {
-            if (this.required) {
-                this.valid = this.checked;
-                this.invalid = !this.valid;
-                return this.valid;
-            }
-        }
-
-        this.valid = true;
-        this.invalid = false;
-        return true;
+        });
+        return root;
     }
 
     firstUpdated() {
-        if (this.type === 'radio' && this.checked) {
-            const form = this.closest('nxa-form');
-            if (form) {
-                const radios = form.querySelectorAll(`nxa-form-input[type="radio"][name="${this.name}"]`);
-                radios.forEach((radio: NxaFormInput) => {
-                    if (radio !== this) {
-                        radio.checked = false;
+        const slot = this.shadowRoot?.querySelector('slot[name="input"]') as HTMLSlotElement;
+        if (slot) {
+            slot.addEventListener('slotchange', () => {
+                const elements = slot.assignedElements();
+                this.input = elements[0] as HTMLInputElement | HTMLSelectElement;
+                if (this.input) {
+                    // Make sure ID matches what we're using in the label
+                    this.input.id = this._uniqueId;
+
+                    this.required = this.input.hasAttribute('required');
+                    this.name = this.input.getAttribute('name') || this.name;
+
+                    if (this.input instanceof HTMLInputElement) {
+                        this.type = this.input.type || this.type;
                     }
-                });
+
+                    // If we have selectOptions and this is a select element, populate the options
+                    if (this.selectOptions.length > 0 && this.input instanceof HTMLSelectElement) {
+                        this.updateSelectOptions(this.input);
+                    }
+
+                    this.input.addEventListener('input', (e) => {
+                        this._handleInput(e);
+                        this.updateFloatingState(this.input!);
+                    });
+                    this.input.addEventListener('blur', (e) => this._handleBlur(e));
+                    this.input.addEventListener('change', (e) => this._handleInput(e));
+
+                    if (this.input.value) {
+                        this._validate(this.input);
+                        this.updateFloatingState(this.input);
+                    }
+                }
+            });
+        }
+    }
+
+    private updateSelectOptions(select: HTMLSelectElement) {
+        // Clear existing options
+        select.innerHTML = '';
+
+        if (!this.selectOptions || !Array.isArray(this.selectOptions)) {
+            console.warn('selectOptions is not an array:', this.selectOptions);
+            return;
+        }
+
+        // Add options from selectOptions property
+        this.selectOptions.forEach(option => {
+            const optionElement = document.createElement('option');
+
+            if (typeof option === 'string') {
+                // Case 3: Simple string value
+                optionElement.value = option;
+                optionElement.textContent = option;
+            } else if ('key' in option && 'value' in option) {
+                // Case 1: {key, value} object
+                optionElement.value = option.key ?? '';  // Use empty string if key is undefined
+                optionElement.textContent = option.value;
+            } else {
+                // Case 2: {KEY: "VALUE"} object
+                const entries = Object.entries(option);
+                if (entries.length === 1) {
+                    const [key, value] = entries[0];
+                    optionElement.value = key;
+                    optionElement.textContent = value;
+                }
+            }
+
+            select.appendChild(optionElement);
+        });
+    }
+
+    updated(changedProperties: Map<string, any>) {
+        super.updated(changedProperties);
+
+        if (changedProperties.has('selectOptions')) {
+            if (this.input instanceof HTMLSelectElement) {
+                this.updateSelectOptions(this.input);
             }
         }
     }
 
+    private _handleInput(e: Event) {
+        const target = e.target as HTMLInputElement | HTMLSelectElement;
+        this.isEmpty = !target.value;
+        this._validate(target);
+    }
+
+    private _handleBlur(e: Event) {
+        this.touched = true;
+        const target = e.target as HTMLInputElement | HTMLSelectElement;
+        this._validate(target);
+    }
+
+    private _validate(input: HTMLInputElement | HTMLSelectElement) {
+        if (!input) return false;
+
+        if (this.type === 'range') {
+            this.valid = true;
+            this.invalid = false;
+            this.style.setProperty('--show-valid-feedback', 'none');
+            this.style.setProperty('--show-invalid-feedback', 'none');
+            return true;
+        }
+
+        if (input instanceof HTMLInputElement && (this.type === 'checkbox' || this.type === 'radio')) {
+            if (this.required) {
+                this.valid = input.checked;
+                this.invalid = !input.checked;
+
+                if (this.touched) {
+                    if (this.valid) {
+                        input.classList.remove('is-invalid');
+                        input.classList.add('is-valid');
+                        this.style.setProperty('--show-valid-feedback', 'block');
+                        this.style.setProperty('--show-invalid-feedback', 'none');
+                    } else {
+                        input.classList.add('is-invalid');
+                        input.classList.remove('is-valid');
+                        this.style.setProperty('--show-valid-feedback', 'none');
+                        this.style.setProperty('--show-invalid-feedback', 'block');
+                    }
+                }
+            } else {
+                input.classList.remove('is-invalid');
+                this.valid = true;
+                this.invalid = false;
+                this.style.setProperty('--show-valid-feedback', 'none');
+                this.style.setProperty('--show-invalid-feedback', 'none');
+            }
+            return this.valid;
+        }
+
+        this.isEmpty = !input.value;
+
+        if (this.required && this.isEmpty) {
+            this.valid = false;
+            this.invalid = true;
+            input.classList.add('is-invalid');
+            input.classList.remove('is-valid');
+            this.style.setProperty('--show-valid-feedback', 'none');
+            this.style.setProperty('--show-invalid-feedback', 'block');
+            return false;
+        }
+
+        if (!this.required && this.isEmpty) {
+            this.valid = false;
+            this.invalid = false;
+            input.classList.remove('is-valid', 'is-invalid');
+            this.style.setProperty('--show-valid-feedback', 'none');
+            this.style.setProperty('--show-invalid-feedback', 'none');
+            return true;
+        }
+
+        this.valid = input.checkValidity();
+        this.invalid = !this.valid;
+
+        if (this.valid) {
+            input.classList.add('is-valid');
+            input.classList.remove('is-invalid');
+            this.style.setProperty('--show-valid-feedback', 'block');
+            this.style.setProperty('--show-invalid-feedback', 'none');
+        } else {
+            input.classList.add('is-invalid');
+            input.classList.remove('is-valid');
+            this.style.setProperty('--show-valid-feedback', 'none');
+            this.style.setProperty('--show-invalid-feedback', 'block');
+        }
+
+        return this.valid;
+    }
+
     render() {
+        const uniqueId = this._uniqueId;
+
         if (this.type === 'checkbox' || this.type === 'radio') {
             return html`
                 <div class="form-check ${this.switchStyle === 'modern' ? 'form-switch' : ''}">
-                    <input
-                        type="${this.type}"
-                        class="${this.getInputClasses()}"
-                        id="input-${this._uniqueId}"
-                        .checked="${this.checked}"
-                        ?required="${this.required}"
-                        ?disabled="${this.disabled}"
-                        @change="${this._handleChange}"
-                        @blur="${this._handleBlur}"
-                    >
-                    <label class="${this.getLabelClasses()}" for="input-${this._uniqueId}">
+                    <slot name="input"></slot>
+                    <label class="form-check-label" for="${uniqueId}">
                         ${this.label}${this.required ? html`<span class="required-indicator">*</span>` : ''}
                     </label>
                     ${this.helperText ? html`
                         <div class="form-text">${this.helperText}</div>
                     ` : ''}
                     <div class="invalid-feedback">
-                        <slot name="invalid-feedback">Please select an option</slot>
+                        ${this.invalidFeedback}
                     </div>
                 </div>
             `;
         }
 
-        if (this.type === 'range') {
-            return html`
-                ${this.label ? html`
-                    <label class="form-label" for="input-${this._uniqueId}">
-                        ${this.label}
-                    </label>
-                ` : ''}
-                <input
-                    type="range"
-                    class="form-control"
-                    id="input-${this._uniqueId}"
-                    .value="${this.value}"
-                    min="${this.min}"
-                    max="${this.max}"
-                    step="${this.step}"
-                    ?disabled="${this.disabled}"
-                    @input="${this._handleInput}"
-                >
-                ${this.helperText ? html`
-                    <div class="form-text">${this.helperText}</div>
-                ` : ''}
-            `;
-        }
-
         if (!this.floating) {
-            return html`
-                ${this.label ? html`
-                    <label class="form-label" for="input-${this._uniqueId}">
-                        ${this.label}${this.required ? html`<span class="required-indicator">*</span>` : ''}
-                    </label>
-                ` : ''}
-                <input
-                    type="${this.type}"
-                    class="${this.getInputClasses()}"
-                    id="input-${this._uniqueId}"
-                    .value="${this.value}"
-                    placeholder="${this.placeholder}"
-                    ?required="${this.required}"
-                    ?disabled="${this.disabled}"
-                    ?readonly="${this.readonly}"
-                    @input="${this._handleInput}"
-                    @blur="${this._handleBlur}"
-                >
+            const content = html`
+                <slot name="input"></slot>
                 ${this.helperText ? html`
                     <div class="form-text">${this.helperText}</div>
                 ` : ''}
                 <div class="invalid-feedback">
-                    <slot name="invalid-feedback">Please provide a valid value</slot>
+                    ${this.invalidFeedback}
                 </div>
                 <div class="valid-feedback">
-                    <slot name="valid-feedback">Looks good!</slot>
+                    ${this.validFeedback}
                 </div>
+            `;
+
+            if (this.inline) {
+                return html`
+                    <div class="form-inline">
+                        ${this.label ? html`
+                            <label class="form-label" for="${uniqueId}">
+                                ${this.label}${this.required ? html`<span class="required-indicator">*</span>` : ''}
+                            </label>
+                        ` : ''}
+                        <div class="input-wrapper">
+                            ${content}
+                        </div>
+                    </div>
+                `;
+            }
+
+            return html`
+                ${this.label ? html`
+                    <label class="form-label" for="${uniqueId}">
+                        ${this.label}${this.required ? html`<span class="required-indicator">*</span>` : ''}
+                    </label>
+                ` : ''}
+                ${content}
             `;
         }
 
-        // Floating label layout
+        const labelClasses = this.size !== 'md' ? this.size === 'sm' ? 'small' : 'large' : '';
+
         return html`
             <div class="form-floating">
-                <input
-                    type="${this.type}"
-                    class="${this.getInputClasses()}"
-                    id="input-${this._uniqueId}"
-                    .value="${this.value}"
-                    placeholder="${this.placeholder || ' '}"
-                    ?required="${this.required}"
-                    ?disabled="${this.disabled}"
-                    ?readonly="${this.readonly}"
-                    @input="${this._handleInput}"
-                    @blur="${this._handleBlur}"
-                >
-                <label for="input-${this._uniqueId}">
+                <slot name="input"></slot>
+                <label class="${labelClasses}" for="${uniqueId}">
                     ${this.label}${this.required ? html`<span class="required-indicator">*</span>` : ''}
                 </label>
                 ${this.helperText ? html`
                     <div class="form-text">${this.helperText}</div>
                 ` : ''}
                 <div class="invalid-feedback">
-                    <slot name="invalid-feedback">Please provide a valid value</slot>
+                    ${this.invalidFeedback}
                 </div>
                 <div class="valid-feedback">
-                    <slot name="valid-feedback">Looks good!</slot>
+                    ${this.validFeedback}
                 </div>
             </div>
         `;
+    }
+
+    private get _uniqueId() {
+        if (this.input?.id) return this.input.id;
+        return this.name ? `nxa-${this.name}` : `nxa-${Math.random().toString(36).substring(2, 11)}`;
     }
 }
