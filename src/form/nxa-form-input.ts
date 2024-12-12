@@ -23,7 +23,7 @@ export class NxaFormInput extends LitElement {
     @property() helperText = '';
     @property() switchStyle: 'classic' | 'modern' = 'classic';
     @property() invalidFeedback = 'Please provide a valid value';
-    @property() validFeedback = 'Looks good!';
+    @property() validFeedback = '';
 
     @property({
         attribute: 'select-options',
@@ -275,6 +275,25 @@ export class NxaFormInput extends LitElement {
     }
 
     render() {
+
+        if ( ! this.hasChildNodes()) {
+            let inputElement = document.createElement('input');
+            // Walk all possible properties of input and if set, copy them from the parent element
+            let copyVals = ["name", "type", "value", "placeholder", "required", "min", "max", "step", "pattern", "autocomplete", "autofocus", "disabled", "readonly", "size", "maxlength", "minlength", "multiple", "accept", "inputmode", "list", "form", "formaction", "formenctype", "formmethod", "formnovalidate", "formtarget"];
+            copyVals.forEach((val) => {
+                if (this.hasAttribute(val)) {
+                    inputElement.setAttribute(val, this.getAttribute(val));
+                }
+            });
+            inputElement.setAttribute("slot", "input");
+            if (this.type === 'checkbox' || this.type === 'radio') {
+                inputElement.classList.add("form-check-input");
+            } else {
+                inputElement.classList.add("form-control");
+            }
+            this.appendChild(inputElement);
+        }
+
         const uniqueId = this._uniqueId;
 
         if (this.type === 'checkbox' || this.type === 'radio') {

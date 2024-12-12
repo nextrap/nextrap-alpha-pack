@@ -1,5 +1,18 @@
 import {ka_sleep} from "@kasimirjs/core";
-import {style} from "./style";
+const style = `
+
+:host {
+    --height: 80px;
+    --space: 10px;
+}
+
+::slotted(img) {
+    height: var(--height);
+    margin: 10px !important;
+    width: auto;
+}
+
+`;
 
 class NxInfiniscroll extends HTMLElement {
     private container: HTMLElement;
@@ -19,6 +32,9 @@ class NxInfiniscroll extends HTMLElement {
         super();
         const shadow = this.attachShadow({ mode: "open" });
 
+        const styleElement = document.createElement("style");
+        styleElement.textContent = style;
+        shadow.appendChild(styleElement);
 
         // Root scrolling container is now a slot
         const slot = document.createElement("slot");
