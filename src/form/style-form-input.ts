@@ -213,7 +213,7 @@ export const styleInput = css`
     /* Validation states */
     ::slotted(input[type="checkbox"].form-check-input.is-invalid),
     ::slotted(input[type="radio"].form-check-input.is-invalid) {
-        border-color: var(--nxa-danger);
+        border: 1px solid var(--nxa-danger);
     }
 
     ::slotted(input[type="checkbox"].form-check-input.is-valid),
@@ -565,7 +565,9 @@ export const styleInput = css`
     }
 
     /* Validation States */
-    ::slotted(input.is-valid) {
+    ::slotted(input.is-valid),
+    :not(::slotted(input[type="checkbox"].form-check-input:focus)),
+    :not(::slotted(input[type="radio"].form-check-input:focus)) {
         border-color: var(--nxa-valid-border-color);
         padding-right: calc(1.5em + 0.75rem);
         background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23198754' d='M2.3 6.73.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
@@ -579,7 +581,9 @@ export const styleInput = css`
         box-shadow: var(--nxa-valid-focus-box-shadow);
     }
 
-    ::slotted(input.is-invalid) {
+    ::slotted(input.is-invalid),
+    :not(::slotted(input[type="checkbox"].form-check-input:focus)),
+    :not(::slotted(input[type="radio"].form-check-input:focus)) {
         border-color: var(--nxa-invalid-border-color);
         padding-right: calc(1.5em + 0.75rem);
         background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
@@ -658,6 +662,10 @@ export const styleInput = css`
 
     ::slotted(input.form-check-input.is-invalid) {
         border-color: var(--nxa-invalid-border-color);
+    }
+
+    ::slotted(input[name="modern-radio"].form-check-input.is-invalid) {
+        border: 1px solid var(--nxa-invalid-border-color);
     }
 
     ::slotted(input.form-check-input.is-invalid) ~ .form-check-label {
