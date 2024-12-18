@@ -4,7 +4,7 @@ export const styleInput = css`
     :host {
         display: block;
         /* Base variables */
-        --nxa-primary: #0d6efd;
+        --nxa-primary: var(--nxa-primary, #0d6efd);
         --nxa-secondary: #6c757d;
         --nxa-success: #198754;
         --nxa-danger: #dc3545;
