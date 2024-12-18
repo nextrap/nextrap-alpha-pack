@@ -116,6 +116,29 @@ export class NxaFormInput extends LitElement {
 
                     if (this.input instanceof HTMLInputElement) {
                         this.type = this.input.type || this.type;
+
+                        // Add special handling for radio buttons
+                        if (this.type === 'radio') {
+                            const groupName = this.input.getAttribute('name');
+                            if (groupName) {
+                                this.input.addEventListener('change', () => {
+                                    // Find all radio inputs in the group and validate them
+                                    const form = this.input?.closest('form');
+                                    const allGroupRadios = form ?
+                                        form.querySelectorAll(`input[name="${groupName}"]`) :
+                                        document.querySelectorAll(`input[name="${groupName}"]`);
+
+                                    // Trigger validation for each radio in the group
+                                    allGroupRadios.forEach(radio => {
+                                        const radioInput = radio as HTMLInputElement;
+                                        const radioComponent = radio.closest('nxa-form-input');
+                                        if (radioComponent) {
+                                            (radioComponent as any)._validate(radioInput);
+                                        }
+                                    });
+                                });
+                            }
+                        }
                     }
 
                     // If we have selectOptions and this is a select element, populate the options
@@ -208,32 +231,70 @@ export class NxaFormInput extends LitElement {
         }
 
         if (input instanceof HTMLInputElement && (this.type === 'checkbox' || this.type === 'radio')) {
-            if (this.required) {
-                this.valid = input.checked;
-                this.invalid = !input.checked;
+            if (this.type === 'radio') {
+                // For radio buttons, check the entire group
+                if (this.required && this.touched) {
+                    // Find all radio buttons in the same group
+                    const groupName = input.getAttribute('name');
+                    if (!groupName) return false;
 
-                if (this.touched) {
-                    if (this.valid) {
-                        input.classList.remove('is-invalid');
-                        input.classList.add('is-valid');
-                        this.style.setProperty('--show-valid-feedback', 'block');
-                        this.style.setProperty('--show-invalid-feedback', 'none');
-                    } else {
+                    // Check if any radio in the group is checked
+                    const form = input.closest('form');
+                    const isGroupValid = form ?
+                        form.querySelector(`input[name="${groupName}"]:checked`) !== null :
+                        document.querySelector(`input[name="${groupName}"]:checked`) !== null;
+
+                    this.valid = isGroupValid;
+                    this.invalid = !isGroupValid;
+
+                    if (!isGroupValid) {
+                        // Apply invalid state to all radios in the group
                         input.classList.add('is-invalid');
                         input.classList.remove('is-valid');
                         this.style.setProperty('--show-valid-feedback', 'none');
                         this.style.setProperty('--show-invalid-feedback', 'block');
+                    } else {
+                        // Remove all validation states when group becomes valid
+                        input.classList.remove('is-invalid', 'is-valid');
+                        this.style.setProperty('--show-valid-feedback', 'none');
+                        this.style.setProperty('--show-invalid-feedback', 'none');
                     }
+                } else {
+                    // If not required or not touched, remove all validation states
+                    input.classList.remove('is-invalid', 'is-valid');
+                    this.style.setProperty('--show-valid-feedback', 'none');
+                    this.style.setProperty('--show-invalid-feedback', 'none');
                 }
             } else {
-                input.classList.remove('is-invalid');
-                this.valid = true;
-                this.invalid = false;
-                this.style.setProperty('--show-valid-feedback', 'none');
-                this.style.setProperty('--show-invalid-feedback', 'none');
+                // Checkbox logic stays the same
+                if (this.required) {
+                    this.valid = input.checked;
+                    this.invalid = !input.checked;
+
+                    if (this.touched) {
+                        if (this.valid) {
+                            input.classList.remove('is-invalid');
+                            input.classList.add('is-valid');
+                            this.style.setProperty('--show-valid-feedback', 'block');
+                            this.style.setProperty('--show-invalid-feedback', 'none');
+                        } else {
+                            input.classList.add('is-invalid');
+                            input.classList.remove('is-valid');
+                            this.style.setProperty('--show-valid-feedback', 'none');
+                            this.style.setProperty('--show-invalid-feedback', 'block');
+                        }
+                    }
+                } else {
+                    input.classList.remove('is-invalid');
+                    this.valid = true;
+                    this.invalid = false;
+                    this.style.setProperty('--show-valid-feedback', 'none');
+                    this.style.setProperty('--show-invalid-feedback', 'none');
+                }
             }
             return this.valid;
         }
+
 
         this.isEmpty = !input.value;
 

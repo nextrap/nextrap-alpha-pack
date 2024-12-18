@@ -139,7 +139,7 @@ registerComponent({
     </nxa-form-group>
 
     <nxa-form-group cols="1-2-3">
-        <nxa-form-input type="checkbox" label="Classic Checkbox" name="classic-check">
+        <nxa-form-input type="checkbox" label="Classic Checkbox" name="classic-check" required>
             <input
                 slot="input"
                 type="checkbox"
@@ -273,6 +273,7 @@ registerComponent({
                 class="form-check-input"
                 id="modernSwitch"
                 name="modern-switch"
+                required
             />
         </nxa-form-input>
 
@@ -297,7 +298,7 @@ registerComponent({
                 class="form-check-input"
                 id="modernRadio1"
                 name="modern-radio"
-                checked
+                required
             />
         </nxa-form-input>
 
@@ -308,6 +309,7 @@ registerComponent({
                 class="form-check-input"
                 id="modernRadio2"
                 name="modern-radio"
+                required
             />
         </nxa-form-input>
     </nxa-form-group>
@@ -337,6 +339,8 @@ registerComponent({
             value="50"
         />
     </nxa-form-input>
+
+    <button type="submit">Submit</button>
 </nxa-form>
             `
         }
