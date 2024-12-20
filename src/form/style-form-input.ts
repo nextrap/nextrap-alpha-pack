@@ -4,7 +4,7 @@ export const styleInput = css`
     :host {
         display: block;
         /* Base variables */
-        --nxa-primary: var(--nxa-primary, #0d6efd);
+        --nxa-primary: #0d6efd;
         --nxa-secondary: #6c757d;
         --nxa-success: #198754;
         --nxa-danger: #dc3545;
@@ -23,15 +23,16 @@ export const styleInput = css`
         --nxa-input-bg: #fff;
         --nxa-input-disabled-bg: #e9ecef;
         --nxa-input-color: #212529;
-        --nxa-input-border-color: var(--nxa-border-color, #ccc);
+        --nxa-input-border: 1px solid var(--nxa-input-border-color);
+        --nxa-input-border-color: var(--nxa-border-color);
 
         /* Focus styles */
         --nxa-focus-border-color: #86b7fe;
         --nxa-focus-box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
 
         /* Validation styles */
-        --nxa-valid-color: var(--nxa-success, #198754);
-        --nxa-valid-border-color: var(--nxa-success, #198754);
+        --nxa-valid-color: var(--nxa-success);
+        --nxa-valid-border-color: var(--nxa-success);
         --nxa-valid-focus-box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.25);
         --nxa-invalid-color: var(--nxa-danger);
         --nxa-invalid-border-color: var(--nxa-danger);
@@ -66,8 +67,6 @@ export const styleInput = css`
         --nxa-switch-thumb-size: calc(var(--nxa-switch-height) - 4px);
         --nxa-switch-bg: var(--nxa-secondary);
         --nxa-switch-checked-bg: var(--nxa-primary);
-
-        margin-bottom: var(--nxa-spacing-md);
     }
 
     /* Modern style overrides */
@@ -76,10 +75,10 @@ export const styleInput = css`
         --nxa-border-radius: 0;
         --nxa-border-color: #dee2e6;
         --nxa-focus-box-shadow: none;
+        --nxa-input-border: none;
         --nxa-border-bottom: 1px solid var(--nxa-border-color);
         --nxa-input-border-color: transparent;
     }
-
 
     /* Base Label Styles */
     .form-label {
@@ -88,9 +87,6 @@ export const styleInput = css`
         font-weight: 400;
         color: var(--nxa-input-color);
     }
-
-
-
 
     /* Base Input Styles */
     ::slotted(input.form-control) {
@@ -103,10 +99,14 @@ export const styleInput = css`
         color: var(--nxa-input-color);
         background-color: var(--nxa-input-bg);
         background-clip: padding-box;
-        border: 1px sold var(--nxa-input-border-color);
+        border: var(--nxa-input-border);
         border-bottom: var(--nxa-border-bottom);
         border-radius: var(--nxa-border-radius);
         transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+    ::slotted(input.form-control.is-invalid) {
+        border-color: var(--nxa-danger);
     }
 
     ::slotted(input.form-control:focus) {
@@ -219,14 +219,6 @@ export const styleInput = css`
     ::slotted(input[type="checkbox"].form-check-input.is-valid),
     ::slotted(input[type="radio"].form-check-input.is-valid) {
         border-color: var(--nxa-success);
-    }
-
-    /* Make sure the checkmark stays consistent when checked, even with validation */
-    ::slotted(input[type="checkbox"].form-check-input.is-invalid:checked),
-    ::slotted(input[type="radio"].form-check-input.is-invalid:checked),
-    ::slotted(input[type="checkbox"].form-check-input.is-valid:checked),
-    ::slotted(input[type="radio"].form-check-input.is-valid:checked) {
-        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3l6-6'/%3e%3c/svg%3e");
     }
 
     /* Modern Switch Base Styles */
@@ -581,9 +573,7 @@ export const styleInput = css`
         box-shadow: var(--nxa-valid-focus-box-shadow);
     }
 
-    ::slotted(input.is-invalid),
-    :not(::slotted(input[type="checkbox"].form-check-input:focus)),
-    :not(::slotted(input[type="radio"].form-check-input:focus)) {
+    ::slotted(input.form-control.is-invalid) {
         border-color: var(--nxa-invalid-border-color);
         padding-right: calc(1.5em + 0.75rem);
         background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");

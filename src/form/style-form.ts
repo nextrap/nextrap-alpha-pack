@@ -23,6 +23,7 @@ export const styleForm = css`
         --nxa-input-bg: #fff;
         --nxa-input-disabled-bg: #e9ecef;
         --nxa-input-color: #212529;
+        --nxa-input-border: 1px solid var(--nxa-input-border-color);
         --nxa-input-border-color: var(--nxa-border-color);
 
         /* Focus styles */
@@ -74,6 +75,7 @@ export const styleForm = css`
         --nxa-border-radius: 0;
         --nxa-border-color: #dee2e6;
         --nxa-focus-box-shadow: none;
+        --nxa-input-border: none;
         --nxa-border-bottom: 1px solid var(--nxa-border-color);
         --nxa-input-border-color: transparent;
     }

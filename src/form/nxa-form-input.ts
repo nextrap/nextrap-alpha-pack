@@ -22,7 +22,7 @@ export class NxaFormInput extends LitElement {
     @property({ type: Boolean }) inline = false;
     @property() helperText = '';
     @property() switchStyle: 'classic' | 'modern' = 'classic';
-    @property() invalidFeedback = 'Please provide a valid value';
+    @property() invalidFeedback = '';
     @property() validFeedback = '';
 
     @property({
@@ -367,9 +367,11 @@ export class NxaFormInput extends LitElement {
                     ${this.helperText ? html`
                         <div class="form-text">${this.helperText}</div>
                     ` : ''}
-                    <div class="invalid-feedback">
-                        ${this.invalidFeedback}
-                    </div>
+                    ${this.invalidFeedback !== '' ? html`
+                        <div class="invalid-feedback">
+                            ${this.invalidFeedback}
+                        </div>
+                    `: ''}
                 </div>
             `;
         }
@@ -380,12 +382,16 @@ export class NxaFormInput extends LitElement {
                 ${this.helperText ? html`
                     <div class="form-text">${this.helperText}</div>
                 ` : ''}
-                <div class="invalid-feedback">
-                    ${this.invalidFeedback}
-                </div>
-                <div class="valid-feedback">
-                    ${this.validFeedback}
-                </div>
+                ${this.invalidFeedback !== '' ? html`
+                    <div class="invalid-feedback">
+                        ${this.invalidFeedback}
+                    </div>
+                `: ''}
+                ${this.validFeedback !== '' ? html`
+                    <div class="valid-feedback">
+                        ${this.validFeedback}
+                    </div>
+                `: ''}
             `;
 
             if (this.inline) {
@@ -424,12 +430,16 @@ export class NxaFormInput extends LitElement {
                 ${this.helperText ? html`
                     <div class="form-text">${this.helperText}</div>
                 ` : ''}
-                <div class="invalid-feedback">
-                    ${this.invalidFeedback}
-                </div>
-                <div class="valid-feedback">
-                    ${this.validFeedback}
-                </div>
+                ${this.invalidFeedback !== '' ? html`
+                    <div class="invalid-feedback">
+                        ${this.invalidFeedback}
+                    </div>
+                `: ''}
+                ${this.validFeedback !== '' ? html`
+                    <div class="valid-feedback">
+                        ${this.validFeedback}
+                    </div>
+                `: ''}
             </div>
         `;
     }

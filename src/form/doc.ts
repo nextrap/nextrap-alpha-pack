@@ -11,7 +11,7 @@ registerComponent({
             lang: "html",
             code: `
 <!-- Classic Form Style -->
-<nxa-form action="/submit" method="post">
+<form action="/submit" method="post">
     <!-- Single Input -->
     <nxa-form-input label="Username">
         <input
@@ -204,7 +204,7 @@ registerComponent({
 <hr style="margin: 2rem 0;">
 
 <!-- Modern Form Style -->
-<nxa-form action="/submit" method="post" modern>
+<form action="/submit" method="post" modern>
     <nxa-form-group cols="1-2-3">
         <nxa-form-input label="Country" type="select">
             <select slot="input" class="form-control" name="country" required>
