@@ -1,5 +1,4 @@
 import { registerComponent } from "@nextrap/doc-visualizer";
-
 registerComponent({
     package: "form",
     description: "Form Components",
