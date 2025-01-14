@@ -52,9 +52,6 @@ export const styleInput = css `
         --nxa-font-size-md: 1rem;
         --nxa-font-size-lg: 1.25rem;
 
-        /* Component specific */
-        --nxa-group-gap: 1rem;
-
         /* Check and switch styles */
         --nxa-check-input-size: 1em;
         --nxa-check-bg: #fff;

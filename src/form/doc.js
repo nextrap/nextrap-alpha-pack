@@ -198,7 +198,7 @@ registerComponent({
     </nxa-form-textarea>
 
     <button type="submit">Submit</button>
-</form>
+</nxa-form>
 
 <hr style="margin: 2rem 0;">
 
@@ -340,7 +340,7 @@ registerComponent({
     </nxa-form-input>
 
     <button type="submit">Submit</button>
-</form>
+</nxa-form>
             `
         }
     ]

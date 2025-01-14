@@ -5,6 +5,10 @@ export const styleFormGroup = css`
     :host {
         display: block;
         box-sizing: border-box;
+
+        /* Component specific */
+        --nxa-group-gap: 1rem;
+        --nxa-spacing-md: 10px;
     }
 
     .form-group {

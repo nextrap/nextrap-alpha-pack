@@ -31,20 +31,22 @@ module.exports = {
                 loader: 'raw-loader',
             },
             {
-                test: /\.(scss|css)$/,
-                use: ['style-loader',
+                test: /\.scss$/,
+                exclude: /node_modules/,
+                use: [
                     {
-
-                        loader: 'css-loader',
+                        loader: "lit-css-loader"
+                    },
+                    {
+                        loader: "sass-loader",
                         options: {
-                            url: false // don't complain about url() in css
-                        }
-
-                    }, 'sass-loader', ],
-                include: path.resolve(__dirname, "")
-            },
-
-
+                            sassOptions: {
+                                outputStyle: "compressed"
+                            },
+                        },
+                    }
+                ],
+            }
         ],
     },
     resolve: {
