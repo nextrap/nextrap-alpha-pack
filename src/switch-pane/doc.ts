@@ -1,4 +1,4 @@
-import {registerComponent} from "@nextrap/doc-visualizer";
+import {registerComponent} from "../../workspaces/nextrap-doc-visualizer";
 
 registerComponent({
     package: "switch-pane",

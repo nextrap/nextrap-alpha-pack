@@ -19,6 +19,7 @@ command:
     - "git -C ./workspaces/ clone git@github.com:leuffen/jodastyle.git"
     - "git -C ./workspaces/ clone git@github.com:kasimirjs/kasi-embed.git"
     - "git -C ./workspaces/ clone git@github.com:kasimirjs/kasimirjs-kit-bootstrap.git"
+    - "git -C ./workspaces/ clone git@github.com:nextrap/nextrap-doc-visualizer"
     - "npm install"
 
   update:
