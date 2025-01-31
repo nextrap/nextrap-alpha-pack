@@ -1,6 +1,6 @@
 import { html, LitElement, css } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import styles from './nxa-form-input-two.scss';
+import './nxa-form-input-two.scss';
 
 type SelectOption = {
     key?: string;
@@ -15,9 +15,6 @@ export class NxaFormInputTwo extends LitElement {
     private internals: ElementInternals;
 
     @state() private input?: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
-
-    // @ts-ignore
-    static styles = css`${styles}`;
 
     @property() label = '';
     @property() placeholder = '';
