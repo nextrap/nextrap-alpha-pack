@@ -1,4 +1,4 @@
-# Kickstart container config file - see https://gitub.com/infracamp/kickstart
+# Kickstart container config file - see https://github.com/infracamp/kickstart
 # Run ./kickstart.sh to start a development-container for this project
 version: 1
 from: "ghcr.io/nfra-project/kickstart-flavor-php:unstable"
@@ -19,6 +19,7 @@ command:
     - "git -C ./workspaces/ clone git@github.com:leuffen/jodastyle.git"
     - "git -C ./workspaces/ clone git@github.com:kasimirjs/kasi-embed.git"
     - "git -C ./workspaces/ clone git@github.com:kasimirjs/kasimirjs-kit-bootstrap.git"
+    - "git -C ./workspaces/ clone git@github.com:nextrap/nextrap-doc-visualizer"
     - "npm install"
 
   update:
