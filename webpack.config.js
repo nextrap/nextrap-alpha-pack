@@ -37,6 +37,9 @@ module.exports = {
 
                         loader: 'css-loader',
                         options: {
+                            modules: {
+                                localIdentName: '[local]__[hash:base64:5]',
+                            },
                             url: false // don't complain about url() in css
                         }
 
