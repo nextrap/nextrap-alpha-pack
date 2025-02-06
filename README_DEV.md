@@ -38,7 +38,15 @@ die Repos direkt aus dem Workspace per git pushen.
 **Wichtig** Nachdem Du ein Repo in den Workspace geklont hast, musst du `npm update` ausführen.
 
 
-## Webpack dev server
+### Webpack dev server
 
 Nach dem start des Containers einfach `npm update` und dann `webpack-dev-server` ausführen. Die Dev-Version
 ist dann über `http://localhost:4000` erreichbar.
+
+
+
+## FAQ
+
+Hier bitte FAQs einführen (Fehler, Hinweise, etc)
+
+### FAQ 1
