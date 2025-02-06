@@ -17,7 +17,8 @@ zu starten.
 ### Erster Start mit Kickstart
 
 Alle Repos arbeiten mit [**Kickstart**](https://nfra.infracamp.org). Kickstart ist ein CLI Tool, welches
-die Entwicklungsumgebung als Docker-Container startet. Die Umgebung ist in `kick.yml` definiert.
+die Entwicklungsumgebung als Docker-Container startet. Die Umgebung ist in `kick.yml` definiert. Kickstart
+sollte direkt unter Linux, MacOS und Windows WSL2 laufen.
 
 Nach der Installation des Kickstart Tools kann jedes Projekt mit `kickstart` gestartet werden (einfach
 im Root-Verzeichnis des Projektes ausführen).
