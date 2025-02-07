@@ -18,7 +18,7 @@ registerComponent({
             code: `
 <div
     id="element-highlighter-target-element"
-    style="background: grey; width: 100px; height: 100px"
+    style="background: grey; width: 50%; height: 100px"
 ></div>
 <nxa-element-highlighter
     id="element-highlighter-1"
@@ -94,7 +94,7 @@ registerComponent({
             code: `
 <div
     id="element-highlighter-target-element-3"
-    style="background: lightseagreen; width: 500px; height: 150px"
+    style="background: lightseagreen; width: 50%; height: 150px"
 ></div>
 <nxa-element-highlighter
     id="element-highlighter-3"

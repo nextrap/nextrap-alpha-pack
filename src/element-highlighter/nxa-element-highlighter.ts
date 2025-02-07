@@ -53,7 +53,7 @@ export class NxaElementHighlighter extends LitElement {
         window.addEventListener('scroll', () => this.requestUpdate());
 
         this.resizeObserver.observe(this.targetElement);
-        this.mutationObserver.observe(this.targetElement, { attributes: true, attributeFilter: ['style'] });
+        this.mutationObserver.observe(this.targetElement, { attributeFilter: ['style'] });
 
         if (this.initiallyShown) {
             this.show();
@@ -71,13 +71,13 @@ export class NxaElementHighlighter extends LitElement {
         window.removeEventListener('resize', () => this.requestUpdate());
         window.removeEventListener('scroll', () => this.requestUpdate());
 
+        this.resizeObserver.disconnect();
+        this.mutationObserver.disconnect();
+
         if (this.showOnHover) {
             this.targetElement.removeEventListener('mouseenter', () => this.show());
             this.removeEventListener('mouseleave', () => this.hide());
         }
-
-        this.resizeObserver.disconnect();
-        this.mutationObserver.disconnect();
     }
 
     render() {
