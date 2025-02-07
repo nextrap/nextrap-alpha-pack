@@ -4,6 +4,8 @@ import { customElement, property, state } from 'lit/decorators.js';
 @customElement('nxa-element-highlighter')
 export class NxaElementHighlighter extends LitElement {
 
+    private resizeObserver = new ResizeObserver(() => this.requestUpdate());
+
     @state()
     private _isHidden = true
 
@@ -36,13 +38,23 @@ export class NxaElementHighlighter extends LitElement {
     connectedCallback() {
         super.connectedCallback();
 
-
         if (!this.#targetElement) {
             this.#error = `selector "${this.selector}" not found`;
         }
 
-        window.addEventListener('resize', () => this.requestUpdate());
-        window.addEventListener('scroll', () => this.requestUpdate());
+        window.addEventListener('resize', () => this.requestUpdate);
+        window.addEventListener('scroll', () => this.requestUpdate);
+
+        this.resizeObserver.observe(this.#targetElement);
+    }
+
+    disconnectedCallback() {
+        super.disconnectedCallback();
+
+        window.removeEventListener('resize', () => this.requestUpdate);
+        window.removeEventListener('scroll', () => this.requestUpdate);
+
+        this.resizeObserver.disconnect();
     }
 
     render() {
@@ -52,7 +64,7 @@ export class NxaElementHighlighter extends LitElement {
         if (this.#error) {
             return html`<code style="color: red">${this.localName}: ${this.#error}</code>`;
         }
-        const borderWith = Math.max(this.borderWidth, 0);
+        const borderWidth = Math.max(this.borderWidth, 0);
 
         const target = this.#targetElement;
         const rect = target.getBoundingClientRect();
@@ -60,11 +72,11 @@ export class NxaElementHighlighter extends LitElement {
         const div = document.createElement('div');
         div.style.position = 'fixed';
         div.style.zIndex = this.zIndex;
-        div.style.top = `${rect.top - borderWith}px`;
-        div.style.left = `${rect.left - borderWith}px`;
+        div.style.top = `${rect.top - borderWidth}px`;
+        div.style.left = `${rect.left - borderWidth}px`;
         div.style.width = `${rect.width}px`;
         div.style.height = `${rect.height}px`;
-        div.style.border = `${borderWith}px solid ${this.borderColor}`;
+        div.style.border = `${borderWidth}px solid ${this.borderColor}`;
 
         return html`${div}`;
     }
