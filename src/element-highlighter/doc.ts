@@ -84,6 +84,26 @@ registerComponent({
     <button onclick="document.getElementById('element-highlighter-2').hide()">Hide</button>
 </fieldset>
             `
+        },
+        {
+            title: "Highlighter that is shown on hover",
+            description: `
+<p>This example shows a highlighter that is shown when the user hovers it. This is controlled by the <code>showOnHover</code> attribute.</p>
+            `,
+            lang: "html",
+            code: `
+<div
+    id="element-highlighter-target-element-3"
+    style="background: lightseagreen; width: 500px; height: 150px"
+></div>
+<nxa-element-highlighter
+    id="element-highlighter-3"
+    selector="#element-highlighter-target-element-3"
+    showOnHover
+>
+    <button slot="top-left" onclick="alert('Top Left Action')">Action revealed by hover!</button>
+</nxa-element-highlighter>
+            `
         }
     ]
 })

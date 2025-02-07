@@ -16,6 +16,9 @@ export class NxaElementHighlighter extends LitElement {
     @property({ type: Boolean })
     initiallyShown = false
 
+    @property({ type: Boolean })
+    showOnHover = false;
+
     @property({ type: String })
     selector = '';
 
@@ -44,6 +47,8 @@ export class NxaElementHighlighter extends LitElement {
             this.error = `selector "${this.selector}" not found`;
         }
 
+        this.validateInputs();
+
         window.addEventListener('resize', () => this.requestUpdate());
         window.addEventListener('scroll', () => this.requestUpdate());
 
@@ -53,6 +58,11 @@ export class NxaElementHighlighter extends LitElement {
         if (this.initiallyShown) {
             this.show();
         }
+
+        if (this.showOnHover) {
+            this.targetElement.addEventListener('mouseenter', () => this.show());
+            this.addEventListener('mouseleave', () => this.hide());
+        }
     }
 
     disconnectedCallback() {
@@ -60,6 +70,11 @@ export class NxaElementHighlighter extends LitElement {
 
         window.removeEventListener('resize', () => this.requestUpdate());
         window.removeEventListener('scroll', () => this.requestUpdate());
+
+        if (this.showOnHover) {
+            this.targetElement.removeEventListener('mouseenter', () => this.show());
+            this.removeEventListener('mouseleave', () => this.hide());
+        }
 
         this.resizeObserver.disconnect();
         this.mutationObserver.disconnect();
@@ -113,5 +128,11 @@ export class NxaElementHighlighter extends LitElement {
         area.appendChild(slot);
 
         return area;
+    }
+
+    private validateInputs() {
+        if (this.initiallyShown && this.showOnHover) {
+            throw new Error('showOnHover and initiallyShown cannot be used together');
+        }
     }
 }
