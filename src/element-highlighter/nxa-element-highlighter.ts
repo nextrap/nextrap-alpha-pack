@@ -13,6 +13,9 @@ export class NxaElementHighlighter extends LitElement {
     @state()
     private isHidden = true
 
+    @property({ type: Boolean })
+    initiallyShown = false
+
     @property({ type: String })
     selector = '';
 
@@ -41,18 +44,22 @@ export class NxaElementHighlighter extends LitElement {
             this.error = `selector "${this.selector}" not found`;
         }
 
-        window.addEventListener('resize', () => this.requestUpdate);
-        window.addEventListener('scroll', () => this.requestUpdate);
+        window.addEventListener('resize', () => this.requestUpdate());
+        window.addEventListener('scroll', () => this.requestUpdate());
 
         this.resizeObserver.observe(this.targetElement);
         this.mutationObserver.observe(this.targetElement, { attributes: true, attributeFilter: ['style'] });
+
+        if (this.initiallyShown) {
+            this.show();
+        }
     }
 
     disconnectedCallback() {
         super.disconnectedCallback();
 
-        window.removeEventListener('resize', () => this.requestUpdate);
-        window.removeEventListener('scroll', () => this.requestUpdate);
+        window.removeEventListener('resize', () => this.requestUpdate());
+        window.removeEventListener('scroll', () => this.requestUpdate());
 
         this.resizeObserver.disconnect();
         this.mutationObserver.disconnect();
@@ -78,6 +85,33 @@ export class NxaElementHighlighter extends LitElement {
         div.style.height = `${rect.height}px`;
         div.style.border = `${borderWidth}px solid ${this.borderColor}`;
 
+        const topLeftArea = this.createPositionArea('top-left');
+        div.appendChild(topLeftArea);
+
+        const topRightArea = this.createPositionArea('top-right');
+        div.appendChild(topRightArea);
+
+        const bottomLeftArea = this.createPositionArea('bottom-left');
+        div.appendChild(bottomLeftArea);
+
+        const bottomRightArea = this.createPositionArea('bottom-right');
+        div.appendChild(bottomRightArea);
+
         return html`${div}`;
+    }
+
+    private createPositionArea(position: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'): HTMLDivElement {
+        const area = document.createElement('div');
+        area.style.position = 'absolute';
+        area.style.top = position.startsWith('top') ? '0' : 'auto';
+        area.style.left = position.endsWith('left') ? '0' : 'auto';
+        area.style.right = position.endsWith('right') ? '0' : 'auto';
+        area.style.bottom = position.startsWith('bottom') ? '0' : 'auto';
+
+        const slot = document.createElement('slot');
+        slot.name = position;
+        area.appendChild(slot);
+
+        return area;
     }
 }
