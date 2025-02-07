@@ -4,11 +4,14 @@ import { customElement, property, state } from 'lit/decorators.js';
 @customElement('nxa-element-highlighter')
 export class NxaElementHighlighter extends LitElement {
 
+    private error?: string;
+    private targetElement?: HTMLElement;
+
     private readonly resizeObserver = new ResizeObserver(() => this.requestUpdate());
     private readonly mutationObserver = new MutationObserver(() => this.requestUpdate());
 
     @state()
-    private _isHidden = true
+    private isHidden = true
 
     @property({ type: String })
     selector = '';
@@ -22,32 +25,27 @@ export class NxaElementHighlighter extends LitElement {
     @property({ type: String })
     borderColor = 'red';
 
-    #error?: string;
-
-    get #targetElement(): HTMLElement {
-        return document.querySelector(this.selector);
-    }
-
     show() {
-        this._isHidden = false;
+        this.isHidden = false;
     }
 
     hide() {
-        this._isHidden = true;
+        this.isHidden = true;
     }
 
     connectedCallback() {
         super.connectedCallback();
 
-        if (!this.#targetElement) {
-            this.#error = `selector "${this.selector}" not found`;
+        this.targetElement = document.querySelector(this.selector);
+        if (!this.targetElement) {
+            this.error = `selector "${this.selector}" not found`;
         }
 
         window.addEventListener('resize', () => this.requestUpdate);
         window.addEventListener('scroll', () => this.requestUpdate);
 
-        this.resizeObserver.observe(this.#targetElement);
-        this.mutationObserver.observe(this.#targetElement, { attributes: true, attributeFilter: ['style'] });
+        this.resizeObserver.observe(this.targetElement);
+        this.mutationObserver.observe(this.targetElement, { attributes: true, attributeFilter: ['style'] });
     }
 
     disconnectedCallback() {
@@ -61,18 +59,17 @@ export class NxaElementHighlighter extends LitElement {
     }
 
     render() {
-        if (this._isHidden) {
+        if (this.isHidden) {
             return html``;
         }
-        if (this.#error) {
-            return html`<code style="color: red">${this.localName}: ${this.#error}</code>`;
+        if (this.error) {
+            return html`<code style="color: red">${this.localName}: ${this.error}</code>`;
         }
-        const borderWidth = Math.max(this.borderWidth, 0);
-
-        const target = this.#targetElement;
-        const rect = target.getBoundingClientRect();
 
         const div = document.createElement('div');
+        const rect = this.targetElement.getBoundingClientRect();
+        const borderWidth = Math.max(this.borderWidth, 0);
+
         div.style.position = 'fixed';
         div.style.zIndex = this.zIndex;
         div.style.top = `${rect.top - borderWidth}px`;
