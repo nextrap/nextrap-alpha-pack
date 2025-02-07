@@ -4,7 +4,8 @@ import { customElement, property, state } from 'lit/decorators.js';
 @customElement('nxa-element-highlighter')
 export class NxaElementHighlighter extends LitElement {
 
-    private resizeObserver = new ResizeObserver(() => this.requestUpdate());
+    private readonly resizeObserver = new ResizeObserver(() => this.requestUpdate());
+    private readonly mutationObserver = new MutationObserver(() => this.requestUpdate());
 
     @state()
     private _isHidden = true
@@ -46,6 +47,7 @@ export class NxaElementHighlighter extends LitElement {
         window.addEventListener('scroll', () => this.requestUpdate);
 
         this.resizeObserver.observe(this.#targetElement);
+        this.mutationObserver.observe(this.#targetElement, { attributes: true, attributeFilter: ['style'] });
     }
 
     disconnectedCallback() {
@@ -55,6 +57,7 @@ export class NxaElementHighlighter extends LitElement {
         window.removeEventListener('scroll', () => this.requestUpdate);
 
         this.resizeObserver.disconnect();
+        this.mutationObserver.disconnect();
     }
 
     render() {
