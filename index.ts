@@ -1,4 +1,4 @@
-
+export * from './src/element-highlighter/nxa-element-highlighter';
 export * from './src/form/nxa-form-group';
 export * from './src/form/nxa-form-input';
 export * from './src/form/nxa-form-textarea';
