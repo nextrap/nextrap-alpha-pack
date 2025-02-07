@@ -7,7 +7,12 @@ registerComponent({
     examples: [
         {
             title: "Highlight a static element",
-            description: "This test shows a grey div, which is the target for highlighting. The highlighter is initially hidden.",
+            description: `
+<p>This test shows a grey div, which is the target for highlighting.</p>
+<p>The highlighter is initially hidden - use the <code>Show</code> and <code>Hide</code> buttons.</p>
+<p>Properties like border width and color can be changed via attributes.</p>
+<p>Use the browser dev tools to resize/style the target element and see how the highlighter adjusts.</p>
+`,
             lang: "html",
             // language=html
             code: `
