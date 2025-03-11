@@ -10,7 +10,7 @@ Dieses Repo ist dieses Monorepo.
 
 Bitte lesen:
 
-- [Entwickler: **README_DEV.md**](README_DEV.md) - test
+- [Entwickler: **README_DEV.md**](README_DEV.md)
 
 
 ## Bei Fehlern
