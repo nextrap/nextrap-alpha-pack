@@ -2,31 +2,94 @@ import { css } from "lit";
 
 export const styleChatmessage = css`
     :host {
+        /* colors */
         --chat-message-bg-me: var(--nxa-chat-message-bg-me, #21918c);
         --chat-message-text-me: var(--nxa-chat-message-text-me, #ffffff);
         --chat-message-bg-other: var(--nxa-chat-message-bg-other, #e4e6eb);
         --chat-message-text-other: var(--nxa-chat-message-text-other, #050505);
         --chat-message-bg-both: var(--nxa-chat-message-bg-both, #f0f2f5);
         --chat-message-text-both: var(--nxa-chat-message-text-both, #65676b);
-        --chat-message-header-text-me: var(--nxa-chat-message-header-text-me, #ffffff);
-        --chat-message-header-text-other: var(--nxa-chat-message-header-text-other, #65676b);
-        --chat-message-header-text-both: var(--nxa-chat-message-header-text-both, #65676b);
+        --chat-message-header-text-me: var(
+            --nxa-chat-message-header-text-me,
+            #ffffff
+        );
+        --chat-message-header-text-other: var(
+            --nxa-chat-message-header-text-other,
+            #65676b
+        );
+        --chat-message-header-text-both: var(
+            --nxa-chat-message-header-text-both,
+            #65676b
+        );
         --chat-message-time-text: var(--nxa-chat-message-time-text, #8a8d91);
-        --chat-message-time-text-me: var(--nxa-chat-message-time-text-me, rgba(255, 255, 255, 0.8));
-        --chat-message-footer-border: var(--nxa-chat-message-footer-border, rgba(0, 0, 0, 0.1));
-        --chat-message-footer-border-me: var(--nxa-chat-message-footer-border-me, rgba(255, 255, 255, 0.2));
-        --chat-message-footer-text: var(--nxa-chat-message-footer-text, #65676b);
-        --chat-message-footer-text-me: var(--nxa-chat-message-footer-text-me, rgba(255, 255, 255, 0.8));
+        --chat-message-time-text-me: var(
+            --nxa-chat-message-time-text-me,
+            rgba(255, 255, 255, 0.8)
+        );
+        --chat-message-footer-border-color: var(
+            --nxa-chat-message-footer-border-color,
+            rgba(0, 0, 0, 0.1)
+        );
+        --chat-message-footer-border-color-me: var(
+            --nxa-chat-message-footer-border-color-me,
+            rgba(255, 255, 255, 0.2)
+        );
+        --chat-message-footer-text: var(
+            --nxa-chat-message-footer-text,
+            #65676b
+        );
+        --chat-message-footer-text-me: var(
+            --nxa-chat-message-footer-text-me,
+            rgba(255, 255, 255, 0.8)
+        );
         --chat-message-indicator: var(--nxa-chat-message-indicator, #440154);
+        --date-indicator-bg: var(--nxa-date-indicator-bg, #f0f2f5);
+        --date-indicator-text: var(--nxa-date-indicator-text, #65676b);
+        --date-indicator-border-color: var(
+            --nxa-date-indicator-border-color,
+            #dadde1
+        );
+        --selected-indicator-bg: var(--nxa-selected-indicator-bg, rgba(34, 145, 140, 0.1));
 
         /* Layout */
-        --chat-message-container-max-width: var(--nxa-chat-message-container-max-width, 65%);
-        --chat-message-bubble-border-radius: var(--nxa-chat-message-bubble-border-radius, 4px);
+        --chat-message-container-max-width: var(
+            --nxa-chat-message-container-max-width,
+            65%
+        );
+        --chat-message-bubble-border-radius: var(
+            --nxa-chat-message-bubble-border-radius,
+            4px
+        );
 
         /* Typography */
-        --chat-message-header-font-size: var(--nxa-chat-message-header-font-size, 12px);
-        --chat-message-content-font-size: var(--nxa-chat-message-content-font-size, 14px);
-        --chat-message-footer-font-size: var(--nxa-chat-message-footer-font-size, 11px);
+        --chat-message-header-font-size: var(
+            --nxa-chat-message-header-font-size,
+            12px
+        );
+        --chat-message-content-font-size: var(
+            --nxa-chat-message-content-font-size,
+            14px
+        );
+        --chat-message-footer-font-size: var(
+            --nxa-chat-message-footer-font-size,
+            11px
+        );
+    }
+
+    :host(.muted) .message-bubble {
+        opacity: 0.7;
+        filter: grayscale(1);
+    }
+
+    :host(.selected) .message-row {
+        background-color: var(--selected-indicator-bg);
+    }
+
+    .message-row__wrapper {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        justify-content: flex-start;
     }
 
     .message-row {
@@ -84,8 +147,13 @@ export const styleChatmessage = css`
         font-size: var(--chat-message-header-font-size);
         margin-bottom: 4px;
         display: flex;
-        justify-content: space-between;
+        justify-content: flex-start;
+        align-items: center;
         gap: 8px;
+    }
+
+    .message-header :last-child {
+        margin-left: auto;
     }
 
     .message-row.me .message-header {
@@ -109,6 +177,14 @@ export const styleChatmessage = css`
 
     [name="recipient"]::slotted(*) {
         font-style: italic;
+    }
+
+    [name="recipient"]::before {
+        content: "▶";
+        font-size: 10px;
+        margin-right: -4px;
+        margin-left: -4px;
+        position: relative;
     }
 
     .message-time {
@@ -285,36 +361,51 @@ export const styleChatmessage = css`
     .message-content ::slotted(p) {
         margin: 0;
     }
+
+    .date-indicator__wrapper {
+        display: flex;
+        justify-content: center;
+    }
+    .date-indicator {
+        background-color: var(--date-indicator-bg);
+        color: var(--date-indicator-text);
+        border: 1px solid var(--date-indicator-border-color);
+        padding: 8px 16px;
+        position: relative;
+        width: fit-content;
+    }
+
+    .date-indicator:before,
+    .date-indicator:after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        width: 30px;
+        height: 1px;
+        background-color: var(--date-indicator-border-color);
+    }
+
+    .date-indicator:before {
+        left: -40px;
+    }
+
+    .date-indicator:after {
+        right: -40px;
+    }
+
+    .highlight-indicator {
+        line-height: 1;
+        margin-right: -4px;
+        font-size: 1rem;
+        margin-top: -4px;
+    }
+
+    .muted-indicator {
+        margin-right: -4px;
+    }
+
+    .muted-indicator > svg {
+        width: 1rem;
+        height: 1rem;
+    }
 `;
-
-/*
-date indicator
-
-.message-row.date .message-bubble {
-    background-color: #f0f2f5;
-    color: #65676b;
-    border: 1px solid #dadde1;
-    padding: 8px 16px;
-    position: relative;
-}
-
-
- .message-row.date .message-bubble:before,
- .message-row.date .message-bubble:after {
-     content: "";
-     position: absolute;
-     top: 50%;
-     width: 30px;
-     height: 1px;
-     background-color: #dadde1;
- }
-
- .message-row.date .message-bubble:before {
-     left: -40px;
- }
-
- .message-row.date .message-bubble:after {
-     right: -40px;
- }
-
-*/

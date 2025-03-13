@@ -15,6 +15,7 @@ registerComponent({
                     .my-test-chat {
                         font-family: sans-serif;
                         --nxa-chat-message-indicator: #FF6107;
+                        height: 800px;
                     }
                     .my-test-chat::part(header) {
                         background-color: #242424;
@@ -101,8 +102,7 @@ registerComponent({
                     <!-- messages -->
                     
                     <!-- Example for other -->
-                    <nxa-chat-message data-type="other" data-date="2025-03-10T09:58:45.184Z">
-                        <div slot="before">Today, 2:30 PM</div>
+                    <nxa-chat-message data-type="other" data-date="2025-03-07T09:58:45.184Z">
                         <span slot="sender">John Doe</span>
                         <p slot="content">Hi there! How are you doing today?</p>
                         <div slot="control">
@@ -112,7 +112,7 @@ registerComponent({
                     </nxa-chat-message>
 
                     <!-- Example for me, highlighted -->
-                    <nxa-chat-message data-type="me" highlight data-date="2025-03-12T07:58:45.184Z">
+                    <nxa-chat-message data-type="me" class="highlight" data-date="2025-03-07T07:58:45.184Z">
                         <span slot="sender">You</span>
                         <p slot="content">I'm doing great, thanks for asking!</p>
                         <div slot="control">
@@ -125,8 +125,8 @@ registerComponent({
                         </div>
                     </nxa-chat-message>
 
-                    <!-- Example for other-alt -->
-                    <nxa-chat-message data-type="other-alt" data-date="2025-03-12T08:23:45.184Z">
+                    <!-- Example for other-alt, muted -->
+                    <nxa-chat-message data-type="other-alt" class="muted" data-date="2025-03-10T08:23:45.184Z">
                         <span slot="sender">John Doe</span>
                         <span slot="recipient">to Team</span>
                         <p slot="content">This is an alternate "other" message!</p>
@@ -180,7 +180,6 @@ registerComponent({
 
                     <!-- Example for other -->
                     <nxa-chat-message data-type="other" data-date="2025-03-12T11:37:45.184Z">
-                        <div slot="before">Today, 13:37</div>
                         <span slot="sender">John Doe</span>
                         <p slot="content">Let's chat some more, what do you think? Maybe I should write a little more for this message to wrap around multiple lines. I'll just keep going a little longer just to make sure we'll reach at least two or maybe even three wonderful chat message lines. This is actually harder than i though, on a big screen</p>
                         <div slot="control">
