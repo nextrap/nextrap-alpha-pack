@@ -23,6 +23,7 @@
     "*.ts"
   ],
   "exclude": [
-    "./test"
+    "./test",
+    "**/*.test.ts"
   ]
 }

@@ -11,7 +11,7 @@ registerComponent({
             lang: "html",
             code: `
 <nxa-image style="width: 600px; height: 600px">
-    <img src="https://media.cleanshot.cloud/media/108894/cqCoBOAbnKh0eUgYyvgbTsVW230CKsDjwdotIPZJ.jpeg?Expires=1741748751&Signature=P3cj9lVCUCPIL0IuzXSh~p8UV7UgZ1QZImDugKF5SJaKm76dbgt40vKZjSC2VgOM5yVhPUfDclgweIB1uq-Xem7cg5u4ggSKxHDaFv5AD2GmKN22M~uapXTjkeZEpXJzzb7uJ~vHmlYiP5nHoiNhfGAieDjHW-WvB0HgqENWgwFA77FvF2XAytgOcJPTGMhcC0DLnqD9W0AhjSd17YIzxIACu~R527jUdxElVWQrQmPGDate0RL6EwkFQCFWH4hx8EuhbPA0Jmo50zTmWJ27wUYUGZaTpzcyadhMk-VqWQ4SC~hBOx5eG8ZZWWqS4-rzkjduUWD5jHxYviE9w-BAKA__&Key-Pair-Id=K269JMAT9ZF4GZ" style="object-position: center center;">
+    <img src="src/image/pixel-matrix.png" style="object-position: center center;">
 </nxa-image>
             `
         },
@@ -21,12 +21,12 @@ registerComponent({
             lang: "html",
             code: `
             <br/><br/>
-            <div style="display: flex">
+            <div style="display: flex; height: 400px">
 <nxa-image style="width: 300px; height: 600px">
-    <img style="object-position: center center;" data-crop="top: 0%; bottom: 50%; right: 0%; left: 0%" src="https://media.cleanshot.cloud/media/108894/cqCoBOAbnKh0eUgYyvgbTsVW230CKsDjwdotIPZJ.jpeg?Expires=1741748751&Signature=P3cj9lVCUCPIL0IuzXSh~p8UV7UgZ1QZImDugKF5SJaKm76dbgt40vKZjSC2VgOM5yVhPUfDclgweIB1uq-Xem7cg5u4ggSKxHDaFv5AD2GmKN22M~uapXTjkeZEpXJzzb7uJ~vHmlYiP5nHoiNhfGAieDjHW-WvB0HgqENWgwFA77FvF2XAytgOcJPTGMhcC0DLnqD9W0AhjSd17YIzxIACu~R527jUdxElVWQrQmPGDate0RL6EwkFQCFWH4hx8EuhbPA0Jmo50zTmWJ27wUYUGZaTpzcyadhMk-VqWQ4SC~hBOx5eG8ZZWWqS4-rzkjduUWD5jHxYviE9w-BAKA__&Key-Pair-Id=K269JMAT9ZF4GZ">
+    <img style="object-position: left top;" data-crop="top: 0%; bottom: 0%; right: 0%; left: 0%" src="/src/image/pixel-matrix.png">
 </nxa-image>
-<nxa-image style="width: 600px; height: 600px">
-    <img style="object-position: center center;" data-crop="top: 50px; bottom: 50px; right: 50px; left: 50px" src="https://media.cleanshot.cloud/media/108894/cqCoBOAbnKh0eUgYyvgbTsVW230CKsDjwdotIPZJ.jpeg?Expires=1741748751&Signature=P3cj9lVCUCPIL0IuzXSh~p8UV7UgZ1QZImDugKF5SJaKm76dbgt40vKZjSC2VgOM5yVhPUfDclgweIB1uq-Xem7cg5u4ggSKxHDaFv5AD2GmKN22M~uapXTjkeZEpXJzzb7uJ~vHmlYiP5nHoiNhfGAieDjHW-WvB0HgqENWgwFA77FvF2XAytgOcJPTGMhcC0DLnqD9W0AhjSd17YIzxIACu~R527jUdxElVWQrQmPGDate0RL6EwkFQCFWH4hx8EuhbPA0Jmo50zTmWJ27wUYUGZaTpzcyadhMk-VqWQ4SC~hBOx5eG8ZZWWqS4-rzkjduUWD5jHxYviE9w-BAKA__&Key-Pair-Id=K269JMAT9ZF4GZ">
+<nxa-image style="">
+    <img style="object-position: left top;" data-crop="top: 0px; bottom: 0px; right: 0px; left: 0px" src="/src/image/pixel-matrix.png">
 </nxa-image>
 </div>
             `

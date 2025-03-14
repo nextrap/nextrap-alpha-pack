@@ -37,7 +37,7 @@
     "make.mjs": "tsc -d",
     "build": "npm run make.mjs",
     "start": "webpack serve --mode development",
-    "test": "tsx --test src/**/*.test.ts"
+    "test": "tsx --test src/**/*.test.js"
   },
   "devDependencies": {
     "@types/jsdom": "^21.1.7",

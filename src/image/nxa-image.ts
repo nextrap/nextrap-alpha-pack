@@ -21,12 +21,13 @@ class NxaImage extends HTMLElement {
     private container: HTMLElement;
     private globalDataCrop: Record<string, string>;
     private childDataCrop: Record<string, string>[] = [];
+    private referenceSize: { width: string; height: string };
 
     constructor() {
         super();
         this.style.display = 'flex';
-        this.style.justifyContent = 'center';
-        this.style.alignItems = 'center';
+        //this.style.justifyContent = 'center';
+        //this.style.alignItems = 'center';
 
         // Set default dimensions if not explicitly set
         if (!this.style.width) {
@@ -61,8 +62,19 @@ class NxaImage extends HTMLElement {
         console.log("this.children", this.children);
         console.groupEnd();
 
+        // Initially set up styles
         this.setDefaultStyles();
-        this.cropImages();
+
+        // Wait for layout to complete before measuring
+        requestAnimationFrame(() => {
+            this.cropImages();
+
+            // Set up size change detection
+            const resizeObserver = new ResizeObserver(entries => {
+                this.cropImages();
+            });
+            resizeObserver.observe(this);
+        });
     }
 
     setDefaultStyles() {
@@ -91,7 +103,15 @@ class NxaImage extends HTMLElement {
                 ...this.childDataCrop[index]
             };
 
-            cropImage(child, cropData);
+            // Use offsetWidth/offsetHeight for the actual dimensions including borders
+            const referenceSize = {
+                width: this.offsetWidth + 'px',
+                height: this.offsetHeight + 'px'
+            };
+
+            console.log("referenceSize", referenceSize);
+            console.log("cropData", cropData);
+            cropImage(child, cropData, referenceSize);
         });
     }
 }

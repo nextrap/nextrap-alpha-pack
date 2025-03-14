@@ -46,7 +46,10 @@ module.exports = {
                     }, 'sass-loader', ],
                 include: path.resolve(__dirname, "")
             },
-
+            {
+                test: /\.(png|svg|jpg|jpeg|gif)$/i,
+                type: 'asset/resource',
+            },
 
         ],
     },
@@ -56,9 +59,10 @@ module.exports = {
     devtool: 'source-map',
     mode: "development",
     devServer: {
-        static: {
-            directory: path.join(__dirname, 'docs'),
-        },
+        static: [
+            {directory: path.join(__dirname, 'docs')},
+            {directory: path.join(__dirname, '')}
+        ],
         compress: true,
         port: 4000,
     },
