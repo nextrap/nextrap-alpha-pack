@@ -126,33 +126,105 @@ export class NxaImage extends LitElement {
         Array.from(this.children).forEach((child) => {
             if (child instanceof HTMLElement) {
                 child.style.cursor = "pointer";
-                child.addEventListener("click", () => {
+                child.addEventListener("click", (event) => {
+                    event.stopPropagation();
+
                     const img = child instanceof HTMLImageElement ? child : this.querySelector("img");
                     if (img) {
+                        if (document.querySelector('.nxa-fullsize-container')) {
+                            return;
+                        }
+
+                        // Create style element
+                        const styleEl = document.createElement('style');
+                        styleEl.id = 'nxa-fullsize-styles';
+                        styleEl.textContent = `
+                        .nxa-fullsize-container {
+                            position: fixed;
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            height: 100%;
+                            z-index: 1000;
+                            cursor: zoom-out;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                        }
+
+                        .nxa-fullsize-dark-overlay {
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            height: 100%;
+                            background-color: rgba(0, 0, 0, 0.85);
+                            z-index: 0;
+                        }
+
+                        .nxa-fullsize-bg {
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            height: 100%;
+                            background-image: url(${img.src});
+                            background-size: cover;
+                            background-position: center;
+                            filter: blur(25px);
+                            opacity: 0.4;
+                            mix-blend-mode: overlay;
+                            z-index: 0;
+                        }
+
+                        .nxa-fullsize-image {
+                            max-width: calc(100% - 2rem);
+                            max-height: calc(100% - 2rem);
+                            object-fit: contain;
+                            position: relative;
+                            z-index: 1;
+                            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+                        }
+                    `;
+
+                        // Create container with elements
+                        const container = document.createElement("div");
+                        container.className = "nxa-fullsize-container";
+
+                        const darkOverlay = document.createElement("div");
+                        darkOverlay.className = "nxa-fullsize-dark-overlay";
+
+                        const blurredBg = document.createElement("div");
+                        blurredBg.className = "nxa-fullsize-bg";
+
                         const fullSizeImg = document.createElement("img");
                         fullSizeImg.src = img.src;
-                        fullSizeImg.style.position = "fixed";
-                        fullSizeImg.style.top = "0";
-                        fullSizeImg.style.left = "0";
-                        fullSizeImg.style.width = "100%";
-                        fullSizeImg.style.height = "100%";
-                        fullSizeImg.style.objectFit = "contain";
-                        fullSizeImg.style.backgroundColor = "rgba(0, 0, 0, 0.8)";
-                        fullSizeImg.style.zIndex = "1000";
-                        fullSizeImg.style.cursor = "zoom-out";
+                        fullSizeImg.className = "nxa-fullsize-image";
 
-                        const closeFullSize = () => fullSizeImg.remove();
-                        fullSizeImg.addEventListener("click", closeFullSize);
+                        // Add elements to container
+                        container.appendChild(darkOverlay);
+                        container.appendChild(blurredBg);
+                        container.appendChild(fullSizeImg);
+
+                        // Setup event handlers
+                        const cleanup = () => {
+                            container.remove();
+                            document.getElementById('nxa-fullsize-styles')?.remove();
+                            document.removeEventListener("keydown", keyHandler);
+                        };
+
+                        container.addEventListener("click", cleanup);
 
                         const keyHandler = (event: KeyboardEvent) => {
                             if (event.key === "Escape") {
-                                closeFullSize();
-                                document.removeEventListener("keydown", keyHandler);
+                                cleanup();
                             }
                         };
                         document.addEventListener("keydown", keyHandler);
 
-                        document.body.appendChild(fullSizeImg);
+                        // Add style and container to document
+                        document.head.appendChild(styleEl);
+                        document.body.appendChild(container);
                     }
                 });
             }
