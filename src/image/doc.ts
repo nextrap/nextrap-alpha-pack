@@ -26,7 +26,7 @@ registerComponent({
 
 <h3>Slideshow</h3>
 <div>
-<nxa-image style="width: 100%; height: 250px" data-features="slideshow blend fullsize">
+<nxa-image style="width: 100%; height: 250px" data-features="slideshow blend fullsize arrows indicators">
     <img src="https://cdn.leuffen.de//leu-kdnlogos/v2/20/267-128_267/MVZ-GG.svg" style="object-position: top center;" data-caption="Bild 1">
     <img src="https://cdn.leuffen.de//leu-kdnlogos/v2/19/85-64_170/Praxis-Gromes.svg" style="object-position: bottom center;">
     <img src="https://cdn.leuffen.de//leu-kdnlogos/v2/18/57-32_228/Gefaess-Gallis.svg" style="object-position: center center;">

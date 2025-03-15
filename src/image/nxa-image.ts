@@ -1,37 +1,33 @@
+import {html, LitElement} from 'lit';
+import {customElement, property, state} from 'lit/decorators.js';
 import {cropImage, cssToJson} from "./nxa-image.utils";
 import {defaultSlideshowInterval, SlideShowConfig, SlideShowTransitions} from "./nxa-image.types";
+import {style} from "./style";
 
-const style = `
-:host {
-    width: inherit;
-    height: inherit;
-    overflow: hidden;
-    position: relative;
-}
+@customElement('nxa-image')
+export class NxaImage extends LitElement {
+    static styles = style;
 
-::slotted(img) {
-    display: block;
-    max-width: 100%;
-    max-height: 100%;
-    width: inherit;
-    height: inherit;
-}
-`;
+    @property({type: Object})
+    globalDataCrop: Record<string, string> = {};
 
-class NxaImage extends HTMLElement {
-    private container: HTMLElement;
-    private globalDataCrop: Record<string, string>;
-    private childDataCrop: Record<string, string>[] = [];
-    private dataFeatures: string[];
-    private slidesShowConfig: SlideShowConfig = {};
-    private fullSize: boolean; // defines, if it's possible to show the image in full size on click
+    @property({type: Array})
+    childDataCrop: Record<string, string>[] = [];
+
+    @property({type: Array})
+    dataFeatures: string[] = [];
+
+    @property({type: Object})
+    slidesShowConfig: SlideShowConfig = {};
+
+    @property({type: Boolean})
+    fullSize = false;
+
+    @state()
+    private slideInterval?: number;
 
     constructor() {
         super();
-        this.style.display = 'flex';
-        //this.style.justifyContent = 'center';
-        //this.style.alignItems = 'center';
-
         // Set default dimensions if not explicitly set
         if (!this.style.width) {
             this.style.width = '100%';
@@ -39,35 +35,99 @@ class NxaImage extends HTMLElement {
         if (!this.style.height) {
             this.style.height = '100%';
         }
+    }
 
-        const shadow = this.attachShadow({mode: "open"});
+    connectedCallback() {
+        super.connectedCallback();
 
-        const styleElement = document.createElement("style");
-        styleElement.textContent = style;
-        shadow.appendChild(styleElement);
-
-        const slot = document.createElement("slot");
-        shadow.appendChild(slot);
-
-        this.container = slot;
         this.globalDataCrop = cssToJson(this.getAttribute("data-crop") || "");
-        for (let child of Array.from(this.children)) {
-            this.childDataCrop.push(cssToJson(child?.getAttribute("data-crop") || ""));
-        }
+
+        // Get child data-crop attributes
+        Array.from(this.children).forEach((child, index) => {
+            this.childDataCrop[index] = cssToJson(child?.getAttribute("data-crop") || "");
+        });
 
         this.dataFeatures = this.getAttribute("data-features")?.split(" ") || [];
         this.initSlidesShowConfig();
 
         this.fullSize = this.dataFeatures.includes("fullsize");
-        this.initFullSize();
+
+        // Wait for layout to complete before measuring
+        requestAnimationFrame(() => {
+            this.cropImages();
+
+            // Set up size change detection
+            const resizeObserver = new ResizeObserver(() => {
+                this.cropImages();
+            });
+            resizeObserver.observe(this);
+        });
+    }
+
+    disconnectedCallback() {
+        super.disconnectedCallback();
+        if (this.slideInterval) {
+            clearInterval(this.slideInterval);
+        }
+    }
+
+    firstUpdated() {
+        if (this.slidesShowConfig.enabled) {
+            this.attachSlideshowStyles();
+            this.initSlideshowInterval();
+        }
+
+        if (this.fullSize) {
+            this.initFullSize();
+        }
+    }
+
+    render() {
+        return html`
+      <slot @slotchange=${this.handleSlotChange}></slot>
+      ${this.slidesShowConfig.showArrows && this.slidesShowConfig.enabled ? html`
+        <div class="navigation-arrows">
+          <button class="arrow-button prev" @click=${this.prevSlide}>&lt;</button>
+          <button class="arrow-button next" @click=${this.nextSlide}>&gt;</button>
+        </div>
+      ` : ''}
+    `;
+    }
+
+    handleSlotChange() {
+        this.childDataCrop = [];
+        Array.from(this.children).forEach((child, index) => {
+            this.childDataCrop[index] = cssToJson(child?.getAttribute("data-crop") || "");
+        });
+
+        this.cropImages();
+
+        if (this.slidesShowConfig.enabled) {
+            this.attachSlideshowStyles();
+        }
+
+        if (this.fullSize) {
+            this.initFullSize();
+        }
+    }
+
+    initSlidesShowConfig() {
+        this.slidesShowConfig.enabled = this.dataFeatures.includes("slideshow");
+        this.slidesShowConfig.interval = defaultSlideshowInterval;
+        this.slidesShowConfig.pauseOnHover = this.dataFeatures.includes("pauseOnHover");
+        this.slidesShowConfig.transition = SlideShowTransitions.filter(t => this.dataFeatures.includes(t))[0] || "fade";
+        this.slidesShowConfig.showThumbnails = this.dataFeatures.includes("thumbnails");
+        this.slidesShowConfig.showArrows = this.dataFeatures.includes("arrows");
+        this.slidesShowConfig.showIndicators = this.dataFeatures.includes("indicators");
+        this.slidesShowConfig.showCaptions = this.dataFeatures.includes("captions");
     }
 
     initFullSize() {
-        if (this.fullSize) {
-            for (let child of Array.from(this.children) as HTMLElement[]) {
+        Array.from(this.children).forEach((child) => {
+            if (child instanceof HTMLElement) {
                 child.style.cursor = "pointer";
                 child.addEventListener("click", () => {
-                    const img: HTMLImageElement = this.querySelector("img");
+                    const img = child instanceof HTMLImageElement ? child : this.querySelector("img");
                     if (img) {
                         const fullSizeImg = document.createElement("img");
                         fullSizeImg.src = img.src;
@@ -80,178 +140,130 @@ class NxaImage extends HTMLElement {
                         fullSizeImg.style.backgroundColor = "rgba(0, 0, 0, 0.8)";
                         fullSizeImg.style.zIndex = "1000";
                         fullSizeImg.style.cursor = "zoom-out";
-                        fullSizeImg.addEventListener("click", () => {
-                            fullSizeImg.remove();
-                        });
 
-                        document.addEventListener("keydown", (event) => {
+                        const closeFullSize = () => fullSizeImg.remove();
+                        fullSizeImg.addEventListener("click", closeFullSize);
+
+                        const keyHandler = (event: KeyboardEvent) => {
                             if (event.key === "Escape") {
-                                fullSizeImg.remove();
+                                closeFullSize();
+                                document.removeEventListener("keydown", keyHandler);
                             }
-                        });
+                        };
+                        document.addEventListener("keydown", keyHandler);
 
                         document.body.appendChild(fullSizeImg);
                     }
                 });
             }
-        }
-    }
-
-    initSlidesShowConfig() {
-        if (!this.dataFeatures) {
-            this.dataFeatures = this.getAttribute("data-features")?.split(" ") || [];
-        }
-        this.slidesShowConfig.enabled = this.dataFeatures.includes("slideshow");
-        this.slidesShowConfig.interval = defaultSlideshowInterval;
-        this.slidesShowConfig.pauseOnHover = this.dataFeatures.includes("pauseOnHover");
-        this.slidesShowConfig.transition = SlideShowTransitions.filter(t => this.dataFeatures.includes(t))[0] || "fade";
-        this.slidesShowConfig.showThumbnails = this.dataFeatures.includes("showThumbnails");
-        this.slidesShowConfig.showArrows = this.dataFeatures.includes("showArrows");
-        this.slidesShowConfig.showIndicators = this.dataFeatures.includes("showIndicators");
-        this.slidesShowConfig.showCaptions = this.dataFeatures.includes("showCaptions");
-    }
-
-    connectedCallback() {
-        console.group("connectedCallback");
-        console.log("Custom element added to page.");
-        console.log("this.container", this.container);
-        console.log("this.globalDataCrop", this.globalDataCrop);
-        console.log("this.childDataCrop", this.childDataCrop);
-        console.log("this.children", this.children);
-        console.log("this.slidesShowConfig", this.slidesShowConfig);
-        console.groupEnd();
-
-        // Initially set up styles
-        this.setDefaultStyles();
-
-        if (this.slidesShowConfig.enabled) {
-            this.attachSlideshowStyles();
-            this.attachSlideshowAnimations();
-            this.addNavigationArrows();
-            this.addIndicators();
-            this.initSlideshowInterval();
-        }
-
-        // Wait for layout to complete before measuring
-        requestAnimationFrame(() => {
-            this.cropImages();
-
-            // Set up size change detection
-            const resizeObserver = new ResizeObserver(entries => {
-                this.cropImages();
-            });
-            resizeObserver.observe(this);
         });
     }
 
-    /**
-     * Attaches animations for the slideshow.
-     * Take a look at the SlideShowConfig to see which animations are enabled.
-     */
-    attachSlideshowAnimations() {
-        const transition = this.slidesShowConfig.transition || "fade";
+    attachSlideshowStyles() {
+        // Add active class to first image
+        const firstImg = Array.from(this.children).find(child =>
+                                                            child instanceof HTMLImageElement
+        ) as HTMLImageElement | undefined;
 
-        // Add style element to shadow DOM for animations
-        const styleElement = document.createElement('style');
-        styleElement.textContent = `
-            ::slotted(img) {
-                transition: opacity 0.5s ease;
-            }
-
-            ::slotted(img.active) {
-                opacity: 1;
-                z-index: 1;
-            }
-
-            ${transition === "blend" ? `
-            ::slotted(img.active) {
-                animation: blendTransition 0.5s ease;
-            }
-            @keyframes blendTransition {
-                from { opacity: 0.5; }
-                to { opacity: 1; }
-            }
-            ` : ''}
-        `;
-
-        this.shadowRoot.appendChild(styleElement);
-    }
-
-    addNavigationArrows() {
-        // Add controls if necessary
-        if (this.slidesShowConfig.showArrows) {
-            // TODO: Add arrow buttons
+        if (firstImg) {
+            firstImg.classList.add("active");
         }
-    }
 
-    addIndicators() {
-        if (this.slidesShowConfig.showIndicators) {
-            // TODO: Add indicators
+        // For slideshow styles, we need to add global styles
+        const styleId = 'nxa-image-slideshow-styles';
+        if (!document.getElementById(styleId)) {
+            const globalStyle = document.createElement('style');
+            globalStyle.id = styleId;
+            globalStyle.textContent = `
+        nxa-image img {
+          transition: opacity 0.5s ease;
         }
+
+        nxa-image.slideshow img:not(.active) {
+          opacity: 0;
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+        }
+
+        nxa-image.slideshow img.active {
+          opacity: 1;
+          z-index: 1;
+        }
+
+        ${this.slidesShowConfig.transition === "blend" ? `
+        nxa-image.slideshow img.active {
+          animation: blendTransition 0.5s ease;
+        }
+        @keyframes blendTransition {
+          from { opacity: 0.5; }
+          to { opacity: 1; }
+        }
+        ` : ''}
+      `;
+            document.head.appendChild(globalStyle);
+        }
+
+        // Add slideshow class to host
+        this.classList.add("slideshow");
     }
 
     nextSlide() {
         const activeSlide = this.querySelector("img.active");
+        if (!activeSlide) {
+            return;
+        }
+
         const nextSlide = activeSlide.nextElementSibling || this.querySelector("img:first-child");
-        activeSlide.classList.remove("active");
-        nextSlide.classList.add("active");
+        if (nextSlide) {
+            activeSlide.classList.remove("active");
+            nextSlide.classList.add("active");
+        }
     }
 
     prevSlide() {
         const activeSlide = this.querySelector("img.active");
+        if (!activeSlide) {
+            return;
+        }
+
         const prevSlide = activeSlide.previousElementSibling || this.querySelector("img:last-child");
-        activeSlide.classList.remove("active");
-        prevSlide.classList.add("active");
+        if (prevSlide) {
+            activeSlide.classList.remove("active");
+            prevSlide.classList.add("active");
+        }
     }
 
     initSlideshowInterval() {
+        if (this.slideInterval) {
+            clearInterval(this.slideInterval);
+        }
+
         const interval = this.slidesShowConfig.interval || defaultSlideshowInterval;
-        setInterval(() => {
+        this.slideInterval = window.setInterval(() => {
             this.nextSlide();
         }, interval);
-    }
 
-    attachSlideshowStyles() {
-        console.group("attachSlideshowStyles");
-        console.log("this.children[0]", this.children[0]);
-        console.groupEnd();
+        if (this.slidesShowConfig.pauseOnHover) {
+            this.addEventListener('mouseenter', () => {
+                if (this.slideInterval) {
+                    clearInterval(this.slideInterval);
+                }
+            });
 
-        // add "active" attribute to first child
-        if (this.children[0]) {
-            this.children[0].classList.add("active");
-        }
-
-        // add "slideshow" class to container
-        this.classList.add("slideshow");
-
-        // Add style element to document head for global styles
-        const globalStyle = document.createElement('style');
-        globalStyle.textContent = `
-    nxa-image.slideshow img:not(.active) {
-        opacity: 0;
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-    }
-  `;
-        document.head.appendChild(globalStyle);
-    }
-
-    setDefaultStyles() {
-        for (let child of Array.from(this.children) as HTMLElement[]) {
-            if (!child.hasAttribute(style)) {
-                child.getAttribute(style);
-            }
+            this.addEventListener('mouseleave', () => {
+                const interval = this.slidesShowConfig.interval || defaultSlideshowInterval;
+                this.slideInterval = window.setInterval(() => {
+                    this.nextSlide();
+                }, interval);
+            });
         }
     }
 
-    /**
-     * Navigates to all children and based on the crop data, crops the images and sets the correct position.
-     */
     cropImages() {
-        const children = Array.from(this.children as HTMLCollectionOf<HTMLElement>);
+        const children = Array.from(this.children) as HTMLElement[];
 
         children.forEach((child, index) => {
             if (!(child instanceof HTMLImageElement)) {
@@ -263,10 +275,9 @@ class NxaImage extends HTMLElement {
                 ...this.childDataCrop[index]
             };
 
-            // Use offsetWidth/offsetHeight for the actual dimensions including borders
             const referenceSize = {
-                width: this.offsetWidth + 'px',
-                height: this.offsetHeight + 'px'
+                width: `${this.offsetWidth}px`,
+                height: `${this.offsetHeight}px`
             };
 
             cropImage(child, cropData, referenceSize);
@@ -274,4 +285,8 @@ class NxaImage extends HTMLElement {
     }
 }
 
-customElements.define("nxa-image", NxaImage);
+declare global {
+    interface HTMLElementTagNameMap {
+        'nxa-image': NxaImage;
+    }
+}
