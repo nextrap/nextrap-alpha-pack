@@ -64,7 +64,7 @@ class NxaImage extends HTMLElement {
 
     initFullSize() {
         if (this.fullSize) {
-            for (let child of Array.from(this.children)) {
+            for (let child of Array.from(this.children) as HTMLElement[]) {
                 child.style.cursor = "pointer";
                 child.addEventListener("click", () => {
                     const img: HTMLImageElement = this.querySelector("img");
@@ -98,7 +98,7 @@ class NxaImage extends HTMLElement {
     }
 
     initSlidesShowConfig() {
-        if(!this.dataFeatures) {
+        if (!this.dataFeatures) {
             this.dataFeatures = this.getAttribute("data-features")?.split(" ") || [];
         }
         this.slidesShowConfig.enabled = this.dataFeatures.includes("slideshow");
@@ -127,6 +127,8 @@ class NxaImage extends HTMLElement {
         if (this.slidesShowConfig.enabled) {
             this.attachSlideshowStyles();
             this.attachSlideshowAnimations();
+            this.addNavigationArrows();
+            this.addIndicators();
             this.initSlideshowInterval();
         }
 
@@ -173,14 +175,18 @@ class NxaImage extends HTMLElement {
         `;
 
         this.shadowRoot.appendChild(styleElement);
+    }
 
+    addNavigationArrows() {
         // Add controls if necessary
         if (this.slidesShowConfig.showArrows) {
-            this.addNavigationArrows();
+            // TODO: Add arrow buttons
         }
+    }
 
+    addIndicators() {
         if (this.slidesShowConfig.showIndicators) {
-            this.addIndicators();
+            // TODO: Add indicators
         }
     }
 
@@ -234,7 +240,7 @@ class NxaImage extends HTMLElement {
     }
 
     setDefaultStyles() {
-        for (let child of Array.from(this.children)) {
+        for (let child of Array.from(this.children) as HTMLElement[]) {
             if (!child.hasAttribute(style)) {
                 child.getAttribute(style);
             }
