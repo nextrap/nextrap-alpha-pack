@@ -168,6 +168,13 @@ class NxaChatMessage extends LitElement {
         );
     }
 
+    private handleKeyDown(e: KeyboardEvent) {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            this.handleClick(e);
+        }
+    }
+
     private checkPreviousMessage() {
         if (this.querySelector('[slot="before"]')) return;
         const parent = this.parentElement;
@@ -206,17 +213,29 @@ class NxaChatMessage extends LitElement {
     #renderCheckbox() {
         if (!this._showCheckbox) return;
         return html`<div class="message-checkbox">
-            ${this._selected
-                ? html`<input type="checkbox" @click=${this.handleCheckboxClick} checked />`
-                : html`<input type="checkbox" @click=${this.handleCheckboxClick} />`}
+            <input 
+                type="checkbox" 
+                @click=${(e: Event) => {
+                    e.stopPropagation(); // Prevent triggering message click
+                    this.handleCheckboxClick(e);
+                }}
+                ?checked=${this._selected}
+                aria-label="Select message"
+            />
         </div>`;
     }
 
     render() {
         return html`
-            <div class="chat-message">
+            <div 
+                class="chat-message" 
+                role="listitem" 
+                tabindex="0"
+                @click=${this.handleClick}
+                @keydown=${this.handleKeyDown}
+            >
                 ${this._showDateIndicator
-                    ? html`<div class="date-indicator__wrapper">
+                    ? html`<div class="date-indicator__wrapper" role="separator" aria-label="Date separator">
                           <time
                               datetime="${this._date.toISOString()}"
                               class="date-indicator"
@@ -230,7 +249,8 @@ class NxaChatMessage extends LitElement {
                     ${this.#renderCheckbox()}
                     <div
                         class="message-row ${this._messageTypeClasses}"
-                        @click=${this.handleClick}
+                        role="article"
+                        aria-label="${this._messageType === 'me' ? 'Your message' : 'Message'}"
                     >
                         <div class="message-container">
                             ${this._messageType === "me" ||
@@ -274,7 +294,7 @@ class NxaChatMessage extends LitElement {
                                         >${this._formattedDate}</span
                                     >
                                 </div>
-                                <div class="message-content">
+                                <div class="message-content" role="text">
                                     <slot name="content"></slot>
                                 </div>
                                 ${this.querySelector('[slot="footer"]')

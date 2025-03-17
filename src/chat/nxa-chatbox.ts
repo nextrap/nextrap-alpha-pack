@@ -45,6 +45,7 @@ class NxaChatbox extends LitElement {
         this.setupScrollListener();
         this.addEventListener('nxa-message-clicked', this.handleMessageSelection.bind(this));
         this.addEventListener('nxa-message-checkbox-clicked', this.handleMessageSelection.bind(this));
+        this.setupKeyboardNavigation();
     }
 
     disconnectedCallback() {
@@ -101,6 +102,22 @@ class NxaChatbox extends LitElement {
         });
     }
 
+    private setupKeyboardNavigation() {
+        this.addEventListener('keydown', (e: KeyboardEvent) => {
+            if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+                e.preventDefault();
+                const messages = Array.from(this.querySelectorAll('nxa-chat-message .message-row'));
+                const currentIndex = messages.findIndex(msg => msg === document.activeElement);
+                
+                if (e.key === 'ArrowDown' && currentIndex < messages.length - 1) {
+                    (messages[currentIndex + 1] as HTMLElement).focus();
+                } else if (e.key === 'ArrowUp' && currentIndex > 0) {
+                    (messages[currentIndex - 1] as HTMLElement).focus();
+                }
+            }
+        });
+    }
+
     public shouldShowDate(currentDate: Date, previousDate: Date): boolean {
         if (!previousDate) return true;
 
@@ -132,24 +149,24 @@ class NxaChatbox extends LitElement {
 
     render() {
         return html`
-            <div class="chat-container">
+            <div class="chat-container" role="region" aria-label="Chat messages">
                 ${this.querySelector('[slot="header"]')
-                    ? html`<div part="header">
+                    ? html`<div part="header" role="banner">
                           <slot name="header"></slot>
                       </div>`
                     : ""}
 
-                <div part="message-container">
+                <div part="message-container" role="list">
                     <slot></slot>
                 </div>
 
                 ${this.querySelector('[slot="input"]')
-                    ? html`<div part="input">
+                    ? html`<div part="input" role="form" aria-label="Message input">
                           <slot name="input"></slot>
                       </div>`
                     : ""}
                 ${this.querySelector('[slot="footer"]')
-                    ? html`<div part="footer">
+                    ? html`<div part="footer" role="contentinfo">
                           <slot name="footer"></slot>
                       </div>`
                     : ""}

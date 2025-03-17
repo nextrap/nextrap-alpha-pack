@@ -49,7 +49,11 @@ export const styleChatmessage = css`
             --nxa-date-indicator-border-color,
             #dadde1
         );
-        --selected-indicator-bg: var(--nxa-selected-indicator-bg, rgba(34, 145, 140, 0.1));
+        --selected-indicator-bg: var(
+            --nxa-selected-indicator-bg,
+            rgba(34, 145, 140, 0.1)
+        );
+        --focus-outline-color: var(--nxa-focus-outline-color, #21918c);
 
         /* Layout */
         --chat-message-container-max-width: var(
@@ -74,6 +78,11 @@ export const styleChatmessage = css`
             --nxa-chat-message-footer-font-size,
             11px
         );
+    }
+
+    :host(:focus-visible) {
+        outline: 2px solid var(--focus-outline-color);
+        outline-offset: 2px;
     }
 
     :host(.muted) .message-bubble {
@@ -138,7 +147,8 @@ export const styleChatmessage = css`
         padding: 0 8px;
     }
 
-    .message-container:hover .message-control {
+    .message-container:hover .message-control,
+    :host(:focus-within) .message-control {
         opacity: 1;
     }
 
