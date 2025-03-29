@@ -128,7 +128,6 @@ export const cropImage = (child: HTMLImageElement, cropData: { [p: string]: stri
 
     // Calculate the scale factor
     const scale = calculateScaleFactor(cropData, referenceSize);
-    console.log("scale", scale);
 
     // Apply transform and set transform-origin
     child.style.transform = `scale(${scale})`;
@@ -172,9 +171,6 @@ export const calculateScaleFactor = (cropData: { [p: string]: string }, referenc
         // For mixed units, we need to normalize everything to a common reference
         let referenceWidth = parseValue(referenceSize.width);
         let referenceHeight = parseValue(referenceSize.height);
-
-        console.log("referenceWidth", referenceWidth);
-        console.log("referenceHeight", referenceHeight);
 
         let referenceWidthPixels: number;
         let referenceHeightPixels: number;
@@ -225,5 +221,262 @@ export const calculateScaleFactor = (cropData: { [p: string]: string }, referenc
         return Math.max(scaleX, scaleY, 1);
     }
 
-    return "";
+    return 1;
+};
+
+/**
+ * Detects if the current device is a mobile device
+ * @returns True if the device is mobile, false otherwise
+ */
+export const detectMobileDevice = (): boolean => {
+    // Check for touch capability
+    const hasTouchCapability = 'ontouchstart' in window ||
+                              navigator.maxTouchPoints > 0 ||
+                              (navigator as any).msMaxTouchPoints > 0;
+
+    // Check for mobile screen size
+    const isMobileWidth = window.innerWidth <= 768;
+
+    // Check for mobile user agent (as a fallback)
+    const userAgent = navigator.userAgent.toLowerCase();
+    const isMobileUserAgent = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent);
+
+    return hasTouchCapability && (isMobileWidth || isMobileUserAgent);
+};
+
+/**
+ * Generates CSS styles for the slideshow
+ * @param transition The transition effect to use
+ * @returns CSS styles as a string
+ */
+export const getSlideshowStyles = (transition?: string): string => {
+    return `
+        nxa-image img {
+          transition: opacity 0.5s ease;
+        }
+
+        nxa-image.slideshow img:not(.active) {
+          opacity: 0;
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+        }
+
+        nxa-image.slideshow img.active {
+          opacity: 1;
+          z-index: 1;
+        }
+
+        ${transition === "blend" ? `
+        nxa-image.slideshow img.active {
+          animation: blendTransition 0.5s ease;
+        }
+        @keyframes blendTransition {
+          from { opacity: 0.5; }
+          to { opacity: 1; }
+        }
+        ` : ''}
+    `;
+};
+
+/**
+ * Creates and displays the fullsize view for an image
+ * @param img The image to display in fullsize
+ * @param isMobileDevice Whether the current device is mobile
+ */
+export const createFullsizeView = (img: HTMLImageElement, isMobileDevice: boolean): void => {
+    if (document.querySelector('.nxa-fullsize-container')) {
+        return;
+    }
+
+    // Create style element
+    const styleEl = document.createElement('style');
+    styleEl.id = 'nxa-fullsize-styles';
+    styleEl.textContent = getFullsizeStyles(img.src);
+
+    // Create container with elements
+    const container = document.createElement("div");
+    container.className = "nxa-fullsize-container";
+
+    const darkOverlay = document.createElement("div");
+    darkOverlay.className = "nxa-fullsize-dark-overlay";
+
+    const blurredBg = document.createElement("div");
+    blurredBg.className = "nxa-fullsize-bg";
+
+    const fullSizeImg = document.createElement("img");
+    fullSizeImg.src = img.src;
+    fullSizeImg.className = "nxa-fullsize-image";
+
+    // Create close button (always create it, but only show on mobile)
+    const closeBtn = document.createElement("button");
+    closeBtn.className = "nxa-fullsize-close-btn";
+    closeBtn.innerHTML = "×";
+    closeBtn.style.display = isMobileDevice ? 'flex' : 'none';
+
+    // Add elements to container
+    container.appendChild(darkOverlay);
+    container.appendChild(blurredBg);
+    container.appendChild(fullSizeImg);
+    container.appendChild(closeBtn);
+
+    // Setup event handlers
+    const cleanup = () => {
+        // Add closing animation class
+        container.classList.add('closing');
+
+        // Wait for animation to complete before removing
+        setTimeout(() => {
+            container.remove();
+            document.getElementById('nxa-fullsize-styles')?.remove();
+        }, 300);
+
+        document.removeEventListener("keydown", keyHandler);
+    };
+
+    container.addEventListener("click", cleanup);
+    closeBtn.addEventListener("click", (e) => {
+        e.stopPropagation(); // Prevent double triggering
+        cleanup();
+    });
+
+    const keyHandler = (event: KeyboardEvent) => {
+        if (event.key === "Escape") {
+            cleanup();
+        }
+    };
+    document.addEventListener("keydown", keyHandler);
+
+    // Add style and container to document
+    document.head.appendChild(styleEl);
+    document.body.appendChild(container);
+};
+
+/**
+ * Generates CSS styles for the fullsize view
+ * @param imgSrc The source URL of the image
+ * @returns CSS styles as a string
+ */
+export const getFullsizeStyles = (imgSrc: string): string => {
+    return `
+        @keyframes nxa-fullsize-fade-in {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes nxa-fullsize-scale-in {
+            from {
+                transform: scale(0.85);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes nxa-fullsize-blur-in {
+            from {
+                opacity: 0;
+                filter: blur(40px);
+            }
+            to {
+                opacity: 0.4;
+                filter: blur(25px);
+            }
+        }
+
+        .nxa-fullsize-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+            cursor: zoom-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: nxa-fullsize-fade-in 0.3s ease-out;
+        }
+
+        .nxa-fullsize-dark-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            z-index: 0;
+            animation: nxa-fullsize-fade-in 0.4s ease-out;
+        }
+
+        .nxa-fullsize-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url(${imgSrc});
+            background-size: cover;
+            background-position: center;
+            filter: blur(25px);
+            opacity: 0.4;
+            mix-blend-mode: overlay;
+            z-index: 0;
+            animation: nxa-fullsize-blur-in 0.8s ease-out;
+        }
+
+        .nxa-fullsize-image {
+            max-width: calc(100% - 2rem);
+            max-height: calc(100% - 2rem);
+            object-fit: contain;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            animation: nxa-fullsize-scale-in 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+            will-change: transform, opacity;
+        }
+
+        .nxa-fullsize-close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 2;
+            backdrop-filter: blur(4px);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            animation: nxa-fullsize-fade-in 0.5s ease-out 0.2s backwards;
+        }
+
+        .nxa-fullsize-close-btn:hover {
+            background-color: rgba(0, 0, 0, 0.7);
+            transform: scale(1.1);
+        }
+
+        /* Animation for closing */
+        .nxa-fullsize-container.closing {
+            animation: nxa-fullsize-fade-in 0.3s ease-in reverse;
+        }
+
+        .nxa-fullsize-container.closing .nxa-fullsize-image {
+            animation: nxa-fullsize-scale-in 0.3s ease-in reverse;
+        }
+    `;
 };
