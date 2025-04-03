@@ -54,7 +54,7 @@ registerComponent({
                         ${LogoLeuffen}
                         </div>
 
-                        <nav class="nxa-navigation nxa-navigation--left" slot="center">
+                        <nav class="nxa-navigation--left" slot="center">
                             <ul>
                                 <li>
                                     <a href="#">Praxiswebsite</a>

@@ -91,6 +91,7 @@ export class NxaNavbar extends LitElement {
             this.setupScrollListener();
         }
         this.injectGlobalStyles();
+        this.applyMissingClasses();
     }
 
     disconnectedCallback() {
@@ -190,6 +191,19 @@ export class NxaNavbar extends LitElement {
         }
     }
 
+    applyMissingClasses() {
+        const slots = ["left", "center", "right"];
+        slots.forEach((slot) => {
+            const slotElement = this.querySelector(`nav[slot="${slot}"]`);
+
+            if (slotElement) {
+                if (!slotElement.classList.contains("nxa-navigation")) {
+                    slotElement.classList.add("nxa-navigation");
+                }
+            }
+        });
+    }
+
     #renderHamburger() {
         const { alwaysShowMobileNav } = this.config;
 
@@ -284,11 +298,7 @@ export class NxaNavbar extends LitElement {
     }
 
     render() {
-        const {
-            style,
-            overlapNextElement,
-            spanLeftSlot,
-        } = this.config;
+        const { style, overlapNextElement, spanLeftSlot } = this.config;
 
         let headerStyle = style;
         if (overlapNextElement) {
