@@ -1,13 +1,9 @@
 import "../index.doc";
 import "../index";
-import "../workspaces/nextrap-doc-visualizer/index";
-import "../workspaces/nextrap-doc-visualizer/src/preview/isolated-preview";
-
-import { Nextrap } from "../workspaces/nextrap-doc-visualizer/src/nextrap-registry";
+import "@nextrap/doc-visualizer";
+import { Nextrap, pinnedPackage as registryPinnedPackage, togglePinPackage } from "@nextrap/doc-visualizer";
 
 (window as any).NextrapRegistry = Nextrap;
-
-import { pinnedPackage as registryPinnedPackage, togglePinPackage } from "../workspaces/nextrap-doc-visualizer/src/nextrap-registry";
 
 document.addEventListener("DOMContentLoaded", () => {
     const docRoot = document.getElementById("doc-root");

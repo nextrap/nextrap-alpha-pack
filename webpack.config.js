@@ -3,7 +3,7 @@
 module.exports = {
     entry: {
         'index': './docs/index.ts',
-        'render-component': './workspaces/nextrap-doc-visualizer/src/preview/render-component.ts' // TODO: Change workspace in path
+        'render-component': './node_modules/@nextrap/doc-visualizer/src/preview/render-component.ts'
     },
     cache: true,
     module: {
@@ -61,7 +61,8 @@ module.exports = {
 
             middlewares.unshift((req, res, next) => {
                 if (req.url && (req.url === '/render-component' || req.url.startsWith('/render-component?'))) {
-                    const htmlPath = path.resolve(__dirname, 'workspaces/nextrap-doc-visualizer/src/preview', 'render-component.html');
+                    // Resolve HTML path from node_modules package
+                    const htmlPath = path.resolve(__dirname, 'node_modules/@nextrap/doc-visualizer/src/preview', 'render-component.html');
                     res.setHeader('Content-Type', 'text/html');
                     res.sendFile(htmlPath, (err) => {
                         if (err) {
