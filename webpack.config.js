@@ -1,9 +1,9 @@
-﻿const path = require('path');
+﻿﻿const path = require('path');
 
 module.exports = {
     entry: {
-        'index': './docs/index.ts'
-
+        'index': './docs/index.ts',
+        'render-component': './workspaces/nextrap-doc-visualizer/src/preview/render-component.ts' // TODO: Change workspace in path
     },
     cache: true,
     module: {
@@ -12,19 +12,12 @@ module.exports = {
                 test: /\.tsx?$/,
                 use: [
                     {
-                        loader: 'esbuild-loader',
+                        loader: 'ts-loader',
                         options: {
-                            loader: "ts",
                         }
                     }
                 ],
-
-                include: [
-                    path.resolve(__dirname, "src"),
-                    path.resolve(__dirname, "workspaces"),
-                    path.resolve(__dirname, "theme")
-                ]
-            },
+},
             {
                 enforce: 'pre',
                 test: /\.html$/,
@@ -40,7 +33,7 @@ module.exports = {
                             modules: {
                                 localIdentName: '[local]__[hash:base64:5]',
                             },
-                            url: false // don't complain about url() in css
+                            url: false
                         }
 
                     }, 'sass-loader', ],
@@ -61,6 +54,28 @@ module.exports = {
         },
         compress: true,
         port: 4000,
+        setupMiddlewares: (middlewares, devServer) => {
+            if (!devServer) {
+                throw new Error('webpack-dev-server is not defined');
+            }
+
+            middlewares.unshift((req, res, next) => {
+                if (req.url && (req.url === '/render-component' || req.url.startsWith('/render-component?'))) {
+                    const htmlPath = path.resolve(__dirname, 'workspaces/nextrap-doc-visualizer/src/preview', 'render-component.html');
+                    res.setHeader('Content-Type', 'text/html');
+                    res.sendFile(htmlPath, (err) => {
+                        if (err) {
+                            console.error("[Middleware] Error sending render-component.html:", err);
+                            res.status(500).send('Internal Server Error');
+                        }
+                    });
+                } else {
+                    next();
+                }
+            });
+
+            return middlewares;
+        },
     },
     plugins: [
 

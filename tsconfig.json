@@ -19,7 +19,9 @@
 
   },
   "include": [
-    "src/**/*",
+    "src/**/*.ts",
+    "docs/**/*.ts",
+    "workspaces/**/*.ts",
     "*.ts"
   ],
   "exclude": [

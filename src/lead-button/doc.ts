@@ -27,12 +27,6 @@ registerComponent({
     <div>second line</div>
 </nxa-lead-button>
 `
-        },
-        {
-            title: "Input with value",
-            description: "Input example with value",
-            lang: "html",
-            code: `<nx-input label="Input Label" placeholder="Input Placeholder" value="Input Value"></nx-input>`
         }
     ]
 })
