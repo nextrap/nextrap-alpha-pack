@@ -51,25 +51,6 @@ registerComponent({
                         background-color: #101010;
                     }
 
-                    .message-button {
-                        width: 32px;
-                        height: 32px;
-                        border-radius: 50%;
-                        border: none;
-                        background-color: #e5e6e7;
-                        color: #242424;
-                        font-size: 14px;
-                        cursor: pointer;
-                        margin-bottom: 4px;
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                    }
-
-                    .message-button:hover {
-                        background-color: #c5c6c7;
-                    }
-
                     .message-status {
                         display: flex;
                         align-items: center;
@@ -90,7 +71,7 @@ registerComponent({
                         margin-left: 4px;
                     }
                 </style>
-                <nxa-chatbox class="my-test-chat">
+                <nxa-chatbox class="my-test-chat" data-date-indicator-format="dd'.' MMMM yyyy">
                     <div slot="header"><h2>Chat Example</h2></div>
                     <div slot="footer">This is a demo chat</div>
                     <div slot="input">
@@ -100,25 +81,23 @@ registerComponent({
                         </div>
                     </div>
                     <!-- messages -->
-                    
+
                     <!-- Example for other -->
                     <nxa-chat-message data-type="other" data-date="2025-03-07T09:58:45.184Z">
                         <span slot="sender">John Doe</span>
+                        <span slot="time">Received at 2025-03-07 09:58</span>
                         <p slot="content">Hi there! How are you doing today?</p>
-                        <div slot="control">
-                            <button class="message-button" title="Reply">↩</button>
-                            <button class="message-button" title="More">⋯</button>
-                        </div>
+                        <button slot="control" title="Reply">↩</button>
+                        <button slot="control" title="More">⋯</button>
                     </nxa-chat-message>
 
                     <!-- Example for me, highlighted -->
                     <nxa-chat-message data-type="me" class="highlight" data-date="2025-03-07T07:58:45.184Z">
                         <span slot="sender">You</span>
+                        <span slot="time">Sent at 2025-03-07 07:58</span>
                         <p slot="content">I'm doing great, thanks for asking!</p>
-                        <div slot="control">
-                            <button class="message-button" title="Edit">✎</button>
-                            <button class="message-button" title="More">⋯</button>
-                        </div>
+                        <button slot="control" title="Edit">✎</button>
+                        <button slot="control" title="More">⋯</button>
                         <div slot="footer">
                             <div class="message-status">✓ Seen</div>
                             <div class="message-reactions">👍 2</div>
@@ -129,11 +108,10 @@ registerComponent({
                     <nxa-chat-message data-type="other-alt" class="muted" data-date="2025-03-10T08:23:45.184Z">
                         <span slot="sender">John Doe</span>
                         <span slot="recipient">to Team</span>
+                        <span slot="time">Received at 2025-03-12 09:05</span>
                         <p slot="content">This is an alternate "other" message!</p>
-                        <div slot="control">
-                            <button class="message-button" title="Reply">↩</button>
-                            <button class="message-button" title="More">⋯</button>
-                        </div>
+                        <button slot="control" title="Reply">↩</button>
+                        <button slot="control" title="More">⋯</button>
                         <div slot="footer">
                             <div class="message-status">Delivered to 5 recipients</div>
                             <div class="message-reactions">❤️ <span class="reaction-count">3</span></div>
@@ -141,27 +119,25 @@ registerComponent({
                     </nxa-chat-message>
 
                     <!-- Example for me-alt -->
-                    <nxa-chat-message data-type="me-alt" data-date="2025-03-12T09:13:45.184Z">
+                    <nxa-chat-message data-type="me-alt" data-date="2025-03-27T09:13:45.184Z">
                         <span slot="sender">You</span>
                         <span slot="recipient">to John</span>
+                        <span slot="time">Sent at 2025-03-11 09:13</span>
                         <p slot="content">I'm good too. This is an alternate "me" message.</p>
-                        <div slot="control">
-                            <button class="message-button" title="Edit">✎</button>
-                            <button class="message-button" title="More">⋯</button>
-                        </div>
+                        <button slot="control" title="Edit">✎</button>
+                        <button slot="control" title="More">⋯</button>
                         <div slot="footer">
                             <div class="message-status">Delivered to 5 recipients</div>
                             <div class="message-reactions">❤️ <span class="reaction-count">3</span></div>
                         </div>
                     </nxa-chat-message>
-                    
+
                     <!-- Example for both -->
-                    <nxa-chat-message data-type="both" data-date="2025-03-12T09:37:45.184Z">
+                    <nxa-chat-message data-type="both" data-date="2025-03-27T09:37:45.184Z">
                         <span slot="sender">System</span>
+                        <span slot="time">Received at 2025-03-12 09:05</span>
                         <p slot="content">This is a normal "both" message that appears in the center.</p>
-                        <div slot="control">
-                            <button class="message-button" title="More">⋯</button>
-                        </div>
+                        <button slot="control" title="More">⋯</button>
                         <div slot="footer">
                             <div class="message-status">Automated message</div>
                             <div class="message-reactions">👀 <span class="reaction-count">4</span></div>
@@ -169,44 +145,40 @@ registerComponent({
                     </nxa-chat-message>
 
                     <!-- Example for both-alt -->
-                    <nxa-chat-message data-type="both-alt" data-date="2025-03-12T09:37:48.184Z">
+                    <nxa-chat-message data-type="both-alt" data-date="2025-03-27T09:37:48.184Z">
                         <span slot="sender">Broadcast</span>
+                        <span slot="time">Received at 2025-03-12 09:05</span>
                         <span slot="recipient">to Everyone</span>
                         <p slot="content">This is an alt "both" message.</p>
-                        <div slot="control">
-                            <button class="message-button" title="More">⋯</button>
-                        </div>
+                        <button slot="control" title="More">⋯</button>
                     </nxa-chat-message>
 
                     <!-- Example for other -->
-                    <nxa-chat-message data-type="other" data-date="2025-03-12T11:37:45.184Z">
+                    <nxa-chat-message data-type="other" data-date="2025-03-27T11:37:45.184Z">
                         <span slot="sender">John Doe</span>
+                        <span slot="time">Received at 2025-03-12 09:05</span>
                         <p slot="content">Let's chat some more, what do you think? Maybe I should write a little more for this message to wrap around multiple lines. I'll just keep going a little longer just to make sure we'll reach at least two or maybe even three wonderful chat message lines. This is actually harder than i though, on a big screen</p>
-                        <div slot="control">
-                            <button class="message-button" title="Reply">↩</button>
-                            <button class="message-button" title="More">⋯</button>
-                        </div>
+                        <button slot="control" title="Reply">↩</button>
+                        <button slot="control" title="More">⋯</button>
                     </nxa-chat-message>
 
                     <!-- Example for me -->
-                    <nxa-chat-message data-type="me" highlight data-date="2025-03-12T11:49:45.184Z">
+                    <nxa-chat-message data-type="me" highlight data-date="2025-03-28T11:49:45.184Z">
                         <span slot="sender">You</span>
+                        <span slot="time">Sent at 2025-03-12 09:05</span>
                         <p slot="content">Excellent!</p>
-                        <div slot="control">
-                            <button class="message-button" title="Edit">✎</button>
-                            <button class="message-button" title="More">⋯</button>
-                        </div>
+                        <button slot="control" title="Edit">✎</button>
+                        <button slot="control" title="More">⋯</button>
                     </nxa-chat-message>
 
                      <!-- Example for other-alt -->
-                    <nxa-chat-message data-type="other-alt" data-date="2025-03-12T12:23:45.184Z">
+                    <nxa-chat-message data-type="other-alt" data-date="2025-03-28T12:23:45.184Z">
                         <span slot="sender">John Doe</span>
                         <span slot="recipient">to Team</span>
+                        <span slot="time">Received at 2025-03-12 09:05</span>
                         <p slot="content">Hey team, what is everyone up to?</p>
-                        <div slot="control">
-                            <button class="message-button" title="Reply">↩</button>
-                            <button class="message-button" title="More">⋯</button>
-                        </div>
+                        <button slot="control" title="Reply">↩</button>
+                        <button slot="control" title="More">⋯</button>
                         <div slot="footer">
                             <div class="message-status">Delivered to 5 recipients</div>
                             <div class="message-reactions">🚀 <span class="reaction-count">5</span></div>
@@ -214,14 +186,13 @@ registerComponent({
                     </nxa-chat-message>
 
                     <!-- Example for me-alt -->
-                    <nxa-chat-message data-type="me-alt" data-date="2025-03-12T09:13:45.184Z">
+                    <nxa-chat-message data-type="me-alt" data-date="2025-03-28T09:13:45.184Z">
                         <span slot="sender">You</span>
                         <span slot="recipient">to John</span>
+                        <span slot="time">Sent at 2025-03-12 09:05</span>
                         <p slot="content">Let's goooo!!!</p>
-                        <div slot="control">
-                            <button class="message-button" title="Edit">✎</button>
-                            <button class="message-button" title="More">⋯</button>
-                        </div>
+                        <button slot="control" title="Edit">✎</button>
+                        <button slot="control" title="More">⋯</button>
                     </nxa-chat-message>
                 </nxa-chatbox>
             `,

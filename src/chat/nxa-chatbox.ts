@@ -1,11 +1,12 @@
 import { LitElement, css, html } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { styleChatbox } from "./style-chatbox";
+import { DateFormat } from "./nxa-chatmessage";
 
 type DateIndicator = "weekly" | "monthly";
 
 @customElement("nxa-chatbox")
-class NxaChatbox extends LitElement {
+export class NxaChatbox extends LitElement {
     static styles = [styleChatbox];
     private scrollContainer: HTMLElement | null = null;
 
@@ -15,8 +16,27 @@ class NxaChatbox extends LitElement {
     @property({ type: String })
     dataDateIndicator: DateIndicator = "weekly";
 
+    @property({ type: String })
+    get dataDateIndicatorFormat(): DateFormat {
+        return this.getAttribute("data-date-indicator-format");
+    }
+
     @state()
-    private selectedMessages: HTMLElement[] = [];
+    private _selectedMessages: HTMLElement[] = [];
+
+    @property({ type: Array })
+    get selectedMessages(): HTMLElement[] {
+        return this._selectedMessages;
+    }
+
+    set selectedMessages(value: HTMLElement[]) {
+        const oldValue = this._selectedMessages;
+        this._selectedMessages = value;
+
+        this.updateMessageSelectionState();
+
+        this.requestUpdate('selectedMessages', oldValue);
+    }
 
     private scrollListener: () => void;
 
@@ -54,6 +74,19 @@ class NxaChatbox extends LitElement {
         super.disconnectedCallback();
     }
 
+    private updateMessageSelectionState(): void {
+        const allMessages = this.querySelectorAll('nxa-chat-message');
+        allMessages.forEach(msg => {
+            const element = msg as HTMLElement;
+            element.classList.remove('selected');
+            msg.toggleAttribute('data-show-checkbox', this._selectedMessages.length > 0);
+        });
+
+        this._selectedMessages.forEach(message => {
+            message.classList.add('selected');
+        });
+    }
+
     private scrollToLatestMessage(): void {
         if (!this.scrollContainer) return;
         // defer scroll
@@ -86,7 +119,7 @@ class NxaChatbox extends LitElement {
         const message = e.target as HTMLElement;
         const index = this.selectedMessages.indexOf(message);
 
-        
+
         if (index === -1) {
             this.selectedMessages = [...this.selectedMessages, message];
             message.classList.add('selected');
@@ -94,7 +127,7 @@ class NxaChatbox extends LitElement {
             this.selectedMessages = this.selectedMessages.filter(m => m !== message);
             message.classList.remove('selected');
         }
-        
+
         // Toggle checkbox visibility on all messages
         const messages = this.querySelectorAll('nxa-chat-message');
         messages.forEach(msg => {
@@ -108,7 +141,7 @@ class NxaChatbox extends LitElement {
                 e.preventDefault();
                 const messages = Array.from(this.querySelectorAll('nxa-chat-message .message-row'));
                 const currentIndex = messages.findIndex(msg => msg === document.activeElement);
-                
+
                 if (e.key === 'ArrowDown' && currentIndex < messages.length - 1) {
                     (messages[currentIndex + 1] as HTMLElement).focus();
                 } else if (e.key === 'ArrowUp' && currentIndex > 0) {

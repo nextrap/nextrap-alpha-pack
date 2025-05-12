@@ -197,6 +197,34 @@ export const styleChatmessage = css`
         position: relative;
     }
 
+    [name="control"]::slotted(*) {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: none;
+        background-color: #e5e6e7;
+        color: #242424;
+        font-size: 14px;
+        cursor: pointer;
+        margin-bottom: 4px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    [name="control"]::slotted(*:hover) {
+        background-color: #c5c6c7;
+    }
+
+    [name="time"]::slotted(*) {
+        margin-left: auto;
+        color: var(--chat-message-time-text);
+    }
+
+    .message-row.me [name="time"]::slotted(*) {
+        color: var(--chat-message-time-text-me);
+    }
+
     .message-time {
         color: var(--chat-message-time-text);
     }

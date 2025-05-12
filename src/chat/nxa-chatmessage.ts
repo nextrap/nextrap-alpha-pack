@@ -1,6 +1,8 @@
 import { LitElement, css, html } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { styleChatmessage } from "./style-chatmessage";
+import { NxaChatbox } from "./nxa-chatbox";
+import { format } from "date-fns/format";
 
 type MessageType =
     | "me"
@@ -9,7 +11,8 @@ type MessageType =
     | "me-alt"
     | "other-alt"
     | "both-alt";
-type DateFormat = "relative" | "localeLong" | "localeShort";
+
+export type DateFormat = "relative" | "localeLong" | "localeShort" | "default" | string;
 
 export const nxaRelativeTime = (date: Date) => {
     let formattedDate = "";
@@ -33,7 +36,6 @@ export const nxaRelativeTime = (date: Date) => {
 @customElement("nxa-chat-message")
 class NxaChatMessage extends LitElement {
     private _date: Date = new Date();
-    private _formattedDate = "";
     private _messageType: MessageType = "me";
     private _messageTypeClasses: string = "";
     @property({ type: String }) dataType: MessageType = "me";
@@ -46,10 +48,7 @@ class NxaChatMessage extends LitElement {
         this._date = Date.parse(value)
             ? new Date(Date.parse(value))
             : new Date();
-        this._formattedDate = this._formatDate(this._date);
     }
-
-    @property({ type: String }) dataFormat: DateFormat = "relative";
 
     @state()
     private _showDateIndicator: boolean = false;
@@ -61,6 +60,13 @@ class NxaChatMessage extends LitElement {
     private _selected: boolean = false;
 
     private _observer: MutationObserver;
+
+    private get dataDateIndicatorFormat(): DateFormat {
+        const chatbox = this.closest("nxa-chatbox") as NxaChatbox;
+        if (!chatbox) return;
+
+        return chatbox.dataDateIndicatorFormat ? chatbox.dataDateIndicatorFormat : "default";
+    }
 
     constructor() {
         super();
@@ -115,9 +121,12 @@ class NxaChatMessage extends LitElement {
 
     static styles = [styleChatmessage];
 
-    private _formatDate(date: Date) {
-        let formattedDate = "";
-        switch (this.dataFormat) {
+    private _formatDate(date: Date, dateFormat: DateFormat = "relative") {
+        if (!date) return "";
+
+        let formattedDate: string;
+
+        switch (dateFormat) {
             case "relative":
                 formattedDate = nxaRelativeTime(date);
                 break;
@@ -133,8 +142,11 @@ class NxaChatMessage extends LitElement {
                     timeStyle: "short",
                 });
                 break;
+            case "default":
+                formattedDate = date.toLocaleDateString();
+                break;
             default:
-                formattedDate = date.toISOString();
+                formattedDate = format(date, dateFormat);
                 break;
         }
         return formattedDate;
@@ -171,7 +183,7 @@ class NxaChatMessage extends LitElement {
     private handleKeyDown(e: KeyboardEvent) {
         if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
-            this.handleClick(e);
+            this.handleClick(e as any);
         }
     }
 
@@ -186,7 +198,7 @@ class NxaChatMessage extends LitElement {
             return;
         }
 
-        const chatbox = this.closest("nxa-chatbox") as any;
+        const chatbox = this.closest("nxa-chatbox") as NxaChatbox;
         if (!chatbox) return;
 
         this._showDateIndicator = chatbox.shouldShowDate(
@@ -213,13 +225,13 @@ class NxaChatMessage extends LitElement {
     #renderCheckbox() {
         if (!this._showCheckbox) return;
         return html`<div class="message-checkbox">
-            <input 
-                type="checkbox" 
+            <input
+                type="checkbox"
                 @click=${(e: Event) => {
                     e.stopPropagation(); // Prevent triggering message click
-                    this.handleCheckboxClick(e);
+                    this.handleCheckboxClick(e as MouseEvent);
                 }}
-                ?checked=${this._selected}
+                .checked=${this._selected}
                 aria-label="Select message"
             />
         </div>`;
@@ -227,9 +239,9 @@ class NxaChatMessage extends LitElement {
 
     render() {
         return html`
-            <div 
-                class="chat-message" 
-                role="listitem" 
+            <div
+                class="chat-message"
+                role="listitem"
                 tabindex="0"
                 @click=${this.handleClick}
                 @keydown=${this.handleKeyDown}
@@ -240,7 +252,7 @@ class NxaChatMessage extends LitElement {
                               datetime="${this._date.toISOString()}"
                               class="date-indicator"
                           >
-                              ${this._date.toLocaleDateString()}
+                              ${this._formatDate(this._date, this.dataDateIndicatorFormat)}
                           </time>
                       </div>`
                     : null}
@@ -290,9 +302,9 @@ class NxaChatMessage extends LitElement {
                                     ${this.querySelector('[slot="recipient"]')
                                         ? html`<slot name="recipient"></slot>`
                                         : ``}
-                                    <span class="message-time"
-                                        >${this._formattedDate}</span
-                                    >
+                                    ${this.querySelector('[slot="time"]')
+                                        ? html`<slot name="time"></slot>`
+                                        : ``}
                                 </div>
                                 <div class="message-content" role="text">
                                     <slot name="content"></slot>

@@ -19,14 +19,14 @@ export const styleChatbox = css`
         box-shadow: var(--box-shadow);
     }
 
-    ::part(header) {
+    [part="header"] {
         padding: 15px 20px;
         border-bottom: 1px solid var(--border-color);
         background-color: white;
         border-radius: var(--border-radius) var(--border-radius) 0 0;
     }
 
-    ::part(message-container) {
+    [part="message-container"] {
         flex: 1;
         overflow-y: auto;
         padding: 20px;
@@ -36,13 +36,13 @@ export const styleChatbox = css`
         align-items: stretch;
     }
 
-    ::part(input) {
+    [part="input"] {
         border-top: 1px solid var(--border-color);
         padding: 15px 20px;
         background-color: white;
     }
 
-    ::part(footer) {
+    [part="footer"] {
         padding: 10px 20px;
         border-top: 1px solid var(--border-color);
         background-color: white;
