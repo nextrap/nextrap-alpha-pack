@@ -31,6 +31,7 @@
   "dependencies": {
     "@kasimirjs/core": "^1.0.9",
     "@nextrap/doc-visualizer": "^0.0.4",
+     "@leuffen/liscom": "^2.0.10",
     "lit": "^3.2.0"
   },
   "scripts": {
